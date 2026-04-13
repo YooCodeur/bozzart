@@ -8,6 +8,8 @@ import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { WishlistButton } from "@/components/artwork/wishlist-button";
 import { ContactArtistButton } from "@/components/artwork/contact-artist-button";
 import { TrackView } from "@/components/tracking/track-view";
+import { StoryLaunchButton } from "@/components/stories/StoryLaunchButton";
+import type { StorySlide } from "@/components/stories/types";
 import { formatPrice } from "@bozzart/core";
 
 interface Props {
@@ -48,6 +50,14 @@ export default async function ArtworkPage({ params }: Props) {
     .single();
 
   if (!artwork) notFound();
+
+  const { data: story } = await supabase
+    .from("artwork_stories")
+    .select("slides, is_published")
+    .eq("artwork_id", artwork.id)
+    .eq("is_published", true)
+    .maybeSingle();
+  const storySlides: StorySlide[] = (story?.slides as StorySlide[]) ?? [];
 
   const { data: otherArtworks } = await supabase
     .from("artworks")
@@ -141,6 +151,16 @@ export default async function ArtworkPage({ params }: Props) {
               )}
               <WishlistButton artworkId={artwork.id} initialCount={artwork.wishlist_count} />
             </div>
+
+            {storySlides.length > 0 && (
+              <div className="mt-6">
+                <StoryLaunchButton
+                  slides={storySlides}
+                  headerTitle={artwork.artist.full_name}
+                  headerSubtitle={artwork.title}
+                />
+              </div>
+            )}
 
             {artwork.story_html && (
               <div className="mt-8 border-t pt-8">
