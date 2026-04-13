@@ -8,6 +8,16 @@ import {
 import { toast } from "sonner";
 import { useAuth } from "@/components/auth/auth-provider";
 import { createSupabaseBrowserClient } from "@/lib/supabase-browser";
+import { exportAnalyticsCsv } from "./actions";
+
+interface TopArtwork {
+  id: string;
+  title: string;
+  view_count: number;
+  wishlist_count: number;
+  price: number;
+  price_currency: string;
+}
 
 interface AnalyticsRow {
   date: string;
@@ -26,6 +36,23 @@ export default function AnalyticsPage() {
   const [data, setData] = useState<AnalyticsRow[]>([]);
   const [period, setPeriod] = useState(30);
   const [error, setError] = useState<string | null>(null);
+  const [topArtworks, setTopArtworks] = useState<TopArtwork[]>([]);
+
+  async function handleExportCsv() {
+    if (!artistProfile) return;
+    const { csv, error } = await exportAnalyticsCsv(artistProfile.id, period);
+    if (error) {
+      toast.error("Export impossible");
+      return;
+    }
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `bozzart-analytics-${period}j.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
 
   function fetchAnalytics() {
     if (!artistProfile) return;
@@ -53,6 +80,16 @@ export default function AnalyticsPage() {
 
   useEffect(() => {
     fetchAnalytics();
+    if (artistProfile) {
+      const supabase = createSupabaseBrowserClient();
+      supabase
+        .from("artworks")
+        .select("id, title, view_count, wishlist_count, price, price_currency")
+        .eq("artist_id", artistProfile.id)
+        .order("view_count", { ascending: false })
+        .limit(5)
+        .then(({ data: rows }) => setTopArtworks((rows as TopArtwork[]) || []));
+    }
   }, [artistProfile, period]);
 
   const totals = data.reduce(
@@ -98,6 +135,12 @@ export default function AnalyticsPage() {
               {p}j
             </button>
           ))}
+          <button
+            onClick={handleExportCsv}
+            className="rounded-full bg-gray-100 px-4 py-1.5 text-sm hover:bg-gray-200"
+          >
+            Export CSV
+          </button>
         </div>
       </div>
 
@@ -185,6 +228,34 @@ export default function AnalyticsPage() {
                 </div>
               )}
             </>
+          )}
+
+          {topArtworks.length > 0 && (
+            <div className="mt-10">
+              <h2 className="mb-4 text-lg font-semibold">Top œuvres</h2>
+              <div className="overflow-hidden rounded-lg border bg-background">
+                <table className="w-full text-sm">
+                  <thead className="bg-gray-50 text-left text-xs uppercase text-gray-500">
+                    <tr>
+                      <th className="px-4 py-2">Œuvre</th>
+                      <th className="px-4 py-2">Vues</th>
+                      <th className="px-4 py-2">Wishlists</th>
+                      <th className="px-4 py-2">Prix</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {topArtworks.map((a) => (
+                      <tr key={a.id} className="border-t">
+                        <td className="px-4 py-2">{a.title}</td>
+                        <td className="px-4 py-2">{a.view_count}</td>
+                        <td className="px-4 py-2">{a.wishlist_count}</td>
+                        <td className="px-4 py-2">{a.price} {a.price_currency}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           )}
         </>
       )}
