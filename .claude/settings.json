@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sed -i '' 's/import { stripe } from \"\"@\\\\/lib\\\\/stripe\"\";/import { getStripe } from \"\"@\\\\/lib\\\\/stripe\"\";/' apps/web/app/api/stripe/*/route.ts)",
+      "Bash(sed -i '' 's/import { supabaseAdmin } from \"\"@\\\\/lib\\\\/supabase-server\"\";/import { getSupabaseAdmin } from \"\"@\\\\/lib\\\\/supabase-server\"\";/' apps/web/app/api/stripe/*/route.ts apps/web/app/api/artworks/export/route.ts)",
+      "Bash(/opt/homebrew/bin/pnpm --filter @bozzart/web build)",
+      "Bash(kill 14475)",
+      "Bash(/opt/homebrew/bin/pnpm --filter @bozzart/web add recharts)",
+      "Bash(ls /Users/yonathan/Desktop/art/apps/web/.env*)",
+      "Bash(ls /Users/yonathan/Desktop/art/.env*)",
+      "Bash(sed -i '' 's/- \\\\[ \\\\] Association oeuvres ↔ series dans le formulaire d''''edition — a implementer/- [x] Association oeuvres ↔ series — select serie dans le formulaire edit \\(charge les series de l''''artiste\\)/' ROADMAP.md)",
+      "Bash(sed -i '' 's/- \\\\[ \\\\] Graphiques \\(Recharts\\\\/Chart.js\\) — a implementer \\(utilise tableau pour le moment\\)/- [x] Graphiques Recharts — AreaChart \\(vues empilees profil\\\\/oeuvres\\\\/decouverte\\), BarChart \\(engagement abonnes\\\\/wishlists\\\\/ventes\\), AreaChart CA/' ROADMAP.md)",
+      "Bash(sed -i '' 's/- \\\\[ \\\\] Gestion des chapitres de l''''Histoire — a implementer/- [x] Chapitres de l''''Histoire — composant StoryChapters \\(affichage + CRUD editable, sauvegarde JSONB\\)/' ROADMAP.md)",
+      "Bash(sed -i '' 's/- \\\\[ \\\\] Archivage — a implementer/- [x] Archivage — bouton dans le header de conversation, update is_archived/' ROADMAP.md)",
+      "Bash(sed -i '' 's/- \\\\[ \\\\] Lien vers une oeuvre — a implementer/- [x] Lien vers une oeuvre — select oeuvres publiees dans le formulaire new post/' ROADMAP.md)",
+      "Bash(/opt/homebrew/bin/pnpm --filter @bozzart/web add leaflet react-leaflet @types/leaflet playwright @playwright/test archiver @types/archiver)",
+      "Bash(/opt/homebrew/bin/pnpm --filter @bozzart/mobile exec npx expo install --fix)",
+      "Bash(/opt/homebrew/bin/pnpm --filter @bozzart/mobile exec npx expo install expo@latest --fix)",
+      "Bash(pnpm add:*)",
+      "Bash(pnpm turbo:*)",
+      "Bash(pnpm remove:*)"
+    ]
+  }
+}

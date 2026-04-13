@@ -1,0 +1,26 @@
+{
+  "name": "@bozzart/api",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src/",
+    "test": "echo 'No tests yet'"
+  },
+  "dependencies": {
+    "@bozzart/core": "workspace:*",
+    "@supabase/supabase-js": "^2.49.0"
+  },
+  "devDependencies": {
+    "@bozzart/config": "workspace:*",
+    "@tanstack/react-query": "^5.60.0",
+    "react": "^18.3.0",
+    "typescript": "^5.4.0"
+  },
+  "peerDependencies": {
+    "@tanstack/react-query": "^5.0.0",
+    "react": "^18.0.0"
+  }
+}

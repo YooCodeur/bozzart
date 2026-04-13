@@ -1,0 +1,16 @@
+{
+  "name": "@bozzart/core",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src/",
+    "test": "echo 'No tests yet'"
+  },
+  "devDependencies": {
+    "@bozzart/config": "workspace:*",
+    "typescript": "^5.4.0"
+  }
+}

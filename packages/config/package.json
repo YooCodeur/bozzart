@@ -1,0 +1,15 @@
+{
+  "name": "@bozzart/config",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./typescript/base": "./typescript/base.json",
+    "./typescript/nextjs": "./typescript/nextjs.json",
+    "./typescript/react-native": "./typescript/react-native.json",
+    "./eslint/base": "./eslint/base.js",
+    "./tailwind": "./tailwind/tailwind.config.ts"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.19"
+  }
+}

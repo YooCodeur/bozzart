@@ -1,0 +1,22 @@
+{
+  "name": "bozzart",
+  "private": true,
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "dev": "turbo dev",
+    "dev:web": "turbo dev --filter=@bozzart/web",
+    "dev:mobile": "turbo dev --filter=@bozzart/mobile",
+    "dev:admin": "turbo dev --filter=@bozzart/admin",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "type-check": "turbo type-check",
+    "test": "turbo test",
+    "clean": "turbo clean && rm -rf node_modules",
+    "db:migrate": "supabase db push",
+    "db:seed": "supabase db seed",
+    "db:reset": "supabase db reset"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.0"
+  }
+}

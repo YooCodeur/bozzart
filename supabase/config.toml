@@ -1,0 +1,21 @@
+project_id = "bozzart"
+
+[db]
+port = 54322
+major_version = 15
+
+[studio]
+enabled = true
+port = 54323
+
+[auth]
+site_url = "http://localhost:3000"
+additional_redirect_urls = ["https://bozzart.art/**", "bozzart://"]
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = false
+
+[storage]
+file_size_limit = "50MiB"
