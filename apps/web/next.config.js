@@ -19,6 +19,14 @@ const nextConfig = {
   },
   headers: async () => [
     {
+      source: "/.well-known/apple-app-site-association",
+      headers: [{ key: "Content-Type", value: "application/json" }],
+    },
+    {
+      source: "/.well-known/assetlinks.json",
+      headers: [{ key: "Content-Type", value: "application/json" }],
+    },
+    {
       source: "/(.*)",
       headers: [
         { key: "X-Frame-Options", value: "DENY" },
