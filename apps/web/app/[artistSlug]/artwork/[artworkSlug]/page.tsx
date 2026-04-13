@@ -9,6 +9,7 @@ import { WishlistButton } from "@/components/artwork/wishlist-button";
 import { ContactArtistButton } from "@/components/artwork/contact-artist-button";
 import { TrackView } from "@/components/tracking/track-view";
 import { StoryLaunchButton } from "@/components/stories/StoryLaunchButton";
+import { PrintOrderSection } from "@/components/artwork/print-order-section";
 import type { StorySlide } from "@/components/stories/types";
 import { formatPrice } from "@bozzart/core";
 
@@ -58,6 +59,14 @@ export default async function ArtworkPage({ params }: Props) {
     .eq("is_published", true)
     .maybeSingle();
   const storySlides: StorySlide[] = (story?.slides as StorySlide[]) ?? [];
+
+  // Phase 20 — print products disponibles
+  const { data: printProducts } = await supabase
+    .from("print_products")
+    .select("id, format, retail_price_cents")
+    .eq("artwork_id", artwork.id)
+    .eq("is_enabled", true)
+    .order("retail_price_cents", { ascending: true });
 
   const { data: otherArtworks } = await supabase
     .from("artworks")
@@ -160,6 +169,13 @@ export default async function ArtworkPage({ params }: Props) {
                   headerSubtitle={artwork.title}
                 />
               </div>
+            )}
+
+            {printProducts && printProducts.length > 0 && (
+              <PrintOrderSection
+                artworkId={artwork.id}
+                products={printProducts as { id: string; format: string; retail_price_cents: number }[]}
+              />
             )}
 
             {artwork.story_html && (
