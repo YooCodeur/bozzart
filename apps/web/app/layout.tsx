@@ -11,7 +11,7 @@ const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfa
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#a855f7",
+  themeColor: "#000000",
 };
 
 export const metadata: Metadata = {
@@ -22,6 +22,13 @@ export const metadata: Metadata = {
   description:
     "Découvrez et achetez des œuvres d'art directement auprès des artistes. Peinture, photographie, illustration, sculpture et plus.",
   metadataBase: new URL("https://bozzart.art"),
+  manifest: "/manifest.json",
+  applicationName: "Bozzart",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Bozzart",
+  },
   icons: {
     icon: "/favicon.ico",
     apple: "/apple-touch-icon.png",
@@ -38,6 +45,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" className={`${inter.variable} ${playfair.variable}`} suppressHydrationWarning>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#000000" />
+      </head>
       <body>
         {/* Skip to main content — accessibilite WCAG 2.1 */}
         <a

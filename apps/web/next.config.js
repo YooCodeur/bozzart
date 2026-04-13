@@ -1,3 +1,14 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+const withSerwistInit = require("@serwist/next").default;
+
+const withSerwist = withSerwistInit({
+  swSrc: "app/sw.ts",
+  swDest: "public/sw.js",
+  cacheOnNavigation: true,
+  reloadOnOnline: true,
+  disable: process.env.NODE_ENV === "development",
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ["@bozzart/ui", "@bozzart/api", "@bozzart/core"],
@@ -46,4 +57,4 @@ const nextConfig = {
   ],
 };
 
-module.exports = nextConfig;
+module.exports = withSerwist(nextConfig);
