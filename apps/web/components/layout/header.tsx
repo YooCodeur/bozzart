@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useAuth } from "@/components/auth/auth-provider";
 
 const navLinks = [
+  { href: "/feed", label: "Feed" },
   { href: "/discover", label: "Découvrir" },
   { href: "/artists", label: "Artistes" },
   { href: "/drops", label: "Drops" },

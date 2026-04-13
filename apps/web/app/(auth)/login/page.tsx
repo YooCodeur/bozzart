@@ -85,10 +85,10 @@ function LoginContent() {
         if (profile?.role === "artist") {
           router.push("/dashboard");
         } else {
-          router.push("/discover");
+          router.push("/feed");
         }
       } else {
-        router.push("/discover");
+        router.push("/feed");
       }
     }
   }

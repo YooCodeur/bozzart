@@ -22,7 +22,8 @@ function AuthCallbackContent() {
 
     supabase.auth.onAuthStateChange((event) => {
       if (event === "SIGNED_IN") {
-        const redirect = searchParams.get("redirect") || "/discover";
+        // TODO: consider role-based redirect here (artists -> /dashboard). For now, default to /feed.
+        const redirect = searchParams.get("redirect") || "/feed";
         router.push(redirect);
       }
     });
