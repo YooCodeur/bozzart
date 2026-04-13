@@ -3,6 +3,9 @@ import { Inter, Playfair_Display } from "next/font/google";
 import { Toaster } from "sonner";
 import { AuthProvider } from "@/components/auth/auth-provider";
 import { QueryProvider } from "@/components/query-provider";
+import { BottomNav } from "@/components/layout/BottomNav";
+import { ViewTransition } from "@/components/layout/ViewTransition";
+import { InstallPrompt } from "@/components/pwa/InstallPrompt";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -22,6 +25,7 @@ export const metadata: Metadata = {
   description:
     "Découvrez et achetez des œuvres d'art directement auprès des artistes. Peinture, photographie, illustration, sculpture et plus.",
   metadataBase: new URL("https://bozzart.art"),
+  manifest: "/manifest.json",
   icons: {
     icon: "/favicon.ico",
     apple: "/apple-touch-icon.png",
@@ -47,7 +51,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Aller au contenu principal
         </a>
         <QueryProvider>
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            <ViewTransition>{children}</ViewTransition>
+            <BottomNav />
+            <InstallPrompt />
+          </AuthProvider>
         </QueryProvider>
         <Toaster position="bottom-right" richColors closeButton />
       </body>
