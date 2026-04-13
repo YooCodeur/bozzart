@@ -189,6 +189,48 @@ serve(async (req) => {
       break;
     }
 
+    // ─── Commande personnalisee payee ───
+    case "checkout.session.completed": {
+      const session = event.data.object as Stripe.Checkout.Session;
+      const commissionId = session.metadata?.commission_id;
+      if (!commissionId) break;
+
+      const paymentIntentId =
+        typeof session.payment_intent === "string"
+          ? session.payment_intent
+          : session.payment_intent?.id ?? null;
+
+      await supabase
+        .from("commissions")
+        .update({
+          status: "in_progress",
+          stripe_payment_intent_id: paymentIntentId,
+          stripe_checkout_session_id: session.id,
+          paid_at: new Date().toISOString(),
+        })
+        .eq("id", commissionId);
+
+      // Notify artist
+      const { data: commission } = await supabase
+        .from("commissions")
+        .select("artist_id, buyer_id, title")
+        .eq("id", commissionId)
+        .single();
+
+      if (commission) {
+        await supabase.from("notifications").insert({
+          user_id: commission.artist_id,
+          type: "commission_paid",
+          title: "Commande payee",
+          body: `La commande "${commission.title}" a ete payee. Vous pouvez commencer.`,
+          data: { commissionId },
+          deep_link: "/dashboard/commissions/received",
+        });
+      }
+
+      break;
+    }
+
     // ─── Mise a jour compte Connect ───
     case "account.updated": {
       const account = event.data.object as Stripe.Account;
