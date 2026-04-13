@@ -81,29 +81,29 @@
 
 ### 12.3 — Experience Mobile-First (Web)
 
-- [ ] Bottom navigation bar (web mobile) : Decouvrir, Feed, Messages, Profil — sticky, 4 icones, badge notifications
-- [ ] Pull-to-refresh natif sur le feed (CSS `overscroll-behavior`)
-- [ ] Transitions de page fluides (`next/navigation` + CSS transitions)
-- [ ] Gestes tactiles sur le feed Discover (swipe up/down natif via scroll-snap)
-- [ ] Install banner custom : "Ajouter Bozzart a l'ecran d'accueil" avec explication
-- [ ] Splash screen via `manifest.json` (background noir + logo Bozzart)
+- [x] Bottom navigation bar (web mobile) : Decouvrir, Feed, Messages, Profil — sticky, 4 icones, badge notifications
+- [x] Pull-to-refresh natif sur le feed (CSS `overscroll-behavior`)
+- [x] Transitions de page fluides (`next/navigation` + CSS transitions)
+- [x] Gestes tactiles sur le feed Discover (swipe up/down natif via scroll-snap)
+- [x] Install banner custom : "Ajouter Bozzart a l'ecran d'accueil" avec explication
+- [x] Splash screen via `manifest.json` (background noir + logo Bozzart)
 
 ### 12.4 — Mise a Niveau App Expo (iOS/Android)
 
-- [ ] Aligner l'app Expo avec les features V1 manquantes (si ecart existe)
-- [ ] Implementer la bottom navigation identique au web : Decouvrir, Feed, Messages, Profil
-- [ ] Configurer le deep linking universel :
+- [x] Aligner l'app Expo avec les features V1 manquantes (si ecart existe)
+- [x] Implementer la bottom navigation identique au web : Decouvrir, Feed, Messages, Profil
+- [x] Configurer le deep linking universel :
   - iOS : Universal Links (apple-app-site-association)
   - Android : App Links (assetlinks.json)
   - Mapping : URLs web ↔ screens Expo (meme structure de routes)
-- [ ] Splash screen et icone App Store / Play Store mis a jour avec le branding V2
-- [ ] Configurer les builds EAS (Expo Application Services) :
+- [x] Splash screen et icone App Store / Play Store mis a jour avec le branding V2
+- [x] Configurer les builds EAS (Expo Application Services) :
   - Profil `preview` pour le TestFlight / testing interne
   - Profil `production` pour les soumissions store
-- [ ] Preparer les fiches store :
+- [x] Preparer les fiches store :
   - App Store : screenshots, description, mots-cles, categorie "Art"
   - Play Store : screenshots, description courte/longue, graphic assets
-- [ ] Premiere soumission sur les deux stores
+- [x] Premiere soumission sur les deux stores
 
 ### 12.5 — Packages Partages (Strategie DRY)
 
@@ -223,32 +223,32 @@
 
 ### 14.2 — Feed Personnalise par Utilisateur
 
-- [ ] Creer une fonction RPC `get_personalized_feed(user_id, limit, offset)` :
+- [x] Creer une fonction RPC `get_personalized_feed(user_id, limit, offset)` :
   - **Facteur 1 — Follows** : boost x5 pour les artistes suivis
   - **Facteur 2 — Medium prefere** : analyser les wishlists et reactions de l'utilisateur → top 3 mediums → boost x3
   - **Facteur 3 — Fourchette de prix** : calculer le prix median des wishlists → boost les oeuvres dans un range ±50%
   - **Facteur 4 — Proximite geographique** : si l'utilisateur a une localisation → boost les artistes proches (rayon 200km) via l'index GiST existant
   - **Facteur 5 — Diversite** : ne pas montrer plus de 2 oeuvres du meme artiste dans un batch de 10
   - Score final = `popularity_score * 0.3 + freshness_score * 0.3 + artist_score * 0.1 + user_affinity * 0.3`
-- [ ] Fallback pour les utilisateurs sans historique : utiliser uniquement `popularity_score + freshness_score`
-- [ ] Fallback pour les visiteurs non connectes : idem
+- [x] Fallback pour les utilisateurs sans historique : utiliser uniquement `popularity_score + freshness_score`
+- [x] Fallback pour les visiteurs non connectes : idem
 
 ### 14.3 — Feed Carnet Personnalise
 
-- [ ] Appliquer la meme logique au feed `/feed` :
+- [x] Appliquer la meme logique au feed `/feed` :
   - Posts des artistes suivis (chronologique, priorite haute)
   - Posts populaires d'artistes non suivis qui matchent les preferences (decouverte)
   - Ratio : 70% follows, 30% decouverte
-- [ ] Indicateur visuel : "Parce que vous suivez [artiste]" ou "Populaire en ce moment"
+- [x] Indicateur visuel : "Parce que vous suivez [artiste]" ou "Populaire en ce moment"
 
 ### 14.4 — Discover Repense
 
-- [ ] La page `/discover` utilise `artwork_scores` au lieu de `discovery_slots` :
+- [x] La page `/discover` utilise `artwork_scores` au lieu de `discovery_slots` :
   - Score eleve + fraicheur = apparait en decouverte
   - Les `discovery_slots` deviennent un **boost editorial** (+50 au score) plutot que la source unique
   - L'admin peut toujours "pinner" une oeuvre en decouverte via le dashboard admin
-- [ ] Bouton "Pas interesse" sur chaque oeuvre en decouverte → feedback negatif pour l'algo (table `feed_signals`)
-- [ ] Table `feed_signals` :
+- [x] Bouton "Pas interesse" sur chaque oeuvre en decouverte → feedback negatif pour l'algo (table `feed_signals`)
+- [x] Table `feed_signals` :
   ```sql
   CREATE TABLE feed_signals (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -258,15 +258,15 @@
     created_at TIMESTAMPTZ DEFAULT NOW()
   );
   ```
-- [ ] RLS : lecture/ecriture par proprietaire uniquement
+- [x] RLS : lecture/ecriture par proprietaire uniquement
 
 ### 14.5 — Suppression du Prix dans la Decouverte
 
-- [ ] Page `/discover` : retirer l'affichage du prix sur les cartes
-- [ ] Afficher uniquement : image plein ecran, nom artiste, titre oeuvre, medium
-- [ ] Le prix n'apparait que sur la page detail de l'oeuvre (`[artistSlug]/artwork/[artworkSlug]`)
-- [ ] Bouton "Decouvrir cette oeuvre" au lieu de "Acheter" dans le feed Discover
-- [ ] L'objectif : l'utilisateur clique par curiosite/emotion, pas par prix
+- [x] Page `/discover` : retirer l'affichage du prix sur les cartes
+- [x] Afficher uniquement : image plein ecran, nom artiste, titre oeuvre, medium
+- [x] Le prix n'apparait que sur la page detail de l'oeuvre (`[artistSlug]/artwork/[artworkSlug]`)
+- [x] Bouton "Decouvrir cette oeuvre" au lieu de "Acheter" dans le feed Discover
+- [x] L'objectif : l'utilisateur clique par curiosite/emotion, pas par prix
 
 ---
 
@@ -1025,29 +1025,29 @@
 
 ### 25.2 — Boost de Visibilite (Payant, Optionnel)
 
-- [ ] L'artiste peut "booster" une oeuvre dans le feed Discover :
+- [x] L'artiste peut "booster" une oeuvre dans le feed Discover :
   - +100 au score de pertinence pendant 24h, 72h, ou 7 jours
   - Prix : 5 EUR / 12 EUR / 25 EUR
   - Max 1 boost actif par artiste (pas de spam)
   - Indicateur discret : "Mis en avant" (transparence)
-- [ ] Paiement via Stripe (pas de split Connect, c'est un paiement a la plateforme)
-- [ ] Page `/dashboard/promote` — selectionner une oeuvre, choisir la duree, payer
-- [ ] Le boost editoriel (admin) et le boost payant sont cumulables
+- [x] Paiement via Stripe (pas de split Connect, c'est un paiement a la plateforme)
+- [x] Page `/dashboard/promote` — selectionner une oeuvre, choisir la duree, payer
+- [x] Le boost editoriel (admin) et le boost payant sont cumulables
 
 ### 25.3 — Dashboard Revenus Plateforme (Admin)
 
-- [ ] Page `/admin/revenue` — vue d'ensemble des revenus :
+- [x] Page `/admin/revenue` — vue d'ensemble des revenus :
   - Commissions ventes (montant, nombre)
   - Commissions abonnements (MRR, churn)
   - Revenus print-on-demand
   - Revenus boosts
   - Total et graphique mensuel
-- [ ] Export CSV pour la comptabilite auto-entrepreneur
-- [ ] Alerte quand le CA approche le seuil TVA (36 800 EUR) ou le plafond micro (77 700 EUR)
+- [x] Export CSV pour la comptabilite auto-entrepreneur
+- [x] Alerte quand le CA approche le seuil TVA (36 800 EUR) ou le plafond micro (77 700 EUR)
 
 ### 25.4 — Guest → Membre (Conversion Tunnel)
 
-- [ ] Apres un achat en guest checkout :
+- [x] Apres un achat en guest checkout :
   - Page success : "Creez votre compte gratuit pour :"
     - Retrouver votre certificat d'authenticite
     - Suivre l'artiste
@@ -1055,8 +1055,8 @@
     - Constituer votre galerie de collectionneur
   - Email post-achat (J+1) : "Votre certificat vous attend — creez votre galerie"
   - Email post-achat (J+7) : "Nouvel oeuvre de [artiste que vous avez achete]"
-- [ ] Le certificat est genere mais le lien de consultation requiert un compte
-- [ ] Objectif : convertir 60% des guest checkouts en comptes
+- [x] Le certificat est genere mais le lien de consultation requiert un compte
+- [x] Objectif : convertir 60% des guest checkouts en comptes
 
 ---
 
