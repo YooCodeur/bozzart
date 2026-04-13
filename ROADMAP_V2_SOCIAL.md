@@ -805,7 +805,7 @@
 
 ### 22.1 — Nouvelles Categories de Notifications
 
-- [ ] Ajouter dans l'enum `notification_type` :
+- [x] Ajouter dans l'enum `notification_type` :
   ```sql
   ALTER TYPE notification_type ADD VALUE 'new_artwork';       -- un artiste suivi publie une oeuvre
   ALTER TYPE notification_type ADD VALUE 'wishlist_drop';      -- une oeuvre en wishlist est dans un drop
@@ -819,30 +819,30 @@
 
 ### 22.2 — Triggers de Notifications
 
-- [ ] Trigger `notify_new_artwork` :
+- [x] Trigger `notify_new_artwork` :
   - Quand un artiste publie une oeuvre (INSERT artworks status=published)
   - Notifie tous ses followers
   - Regroupement : si l'artiste publie 5 oeuvres en 1h → une seule notif "[Artiste] a publie 5 nouvelles oeuvres"
-- [ ] Trigger `notify_wishlist_popular` :
+- [x] Trigger `notify_wishlist_popular` :
   - Quand une oeuvre atteint 10, 25, 50, 100 wishlists
   - Notifie tous les utilisateurs qui l'ont en wishlist
   - "L'oeuvre [titre] est populaire ! 50 personnes l'ont en wishlist"
-- [ ] Trigger `notify_price_change` :
+- [x] Trigger `notify_price_change` :
   - Quand le prix d'une oeuvre change (UPDATE artworks price)
   - Notifie les utilisateurs qui l'ont en wishlist
   - "Le prix de [titre] a baisse : XXX EUR → YYY EUR"
-- [ ] Edge Function `send-weekly-digest` (cron hebdomadaire) :
+- [x] Edge Function `send-weekly-digest` (cron hebdomadaire) :
   - Resume : nouveaux posts des artistes suivis, oeuvres populaires, nombre de reactions recues
   - Envoye par email (Resend) ET notification push
   - Lien "Voir votre semaine sur Bozzart"
 
 ### 22.3 — Preferences de Notifications
 
-- [ ] Page `/dashboard/settings/notifications` :
+- [x] Page `/dashboard/settings/notifications` :
   - Toggle par categorie : ventes, messages, social, marketing, digest
   - Choix du canal : push, email, les deux, aucun
   - Frequence du digest : hebdomadaire, bimensuel, desactive
-- [ ] Table `notification_preferences` :
+- [x] Table `notification_preferences` :
   ```sql
   CREATE TABLE notification_preferences (
     user_id UUID PRIMARY KEY REFERENCES profiles(id) ON DELETE CASCADE,
@@ -861,15 +861,15 @@
 
 ### 22.4 — Re-engagement Automatique
 
-- [ ] Utilisateur inactif depuis 7 jours :
+- [x] Utilisateur inactif depuis 7 jours :
   - Push : "Vos artistes ont publie X posts cette semaine"
   - Email : resume + bouton "Decouvrir"
-- [ ] Utilisateur inactif depuis 30 jours :
+- [x] Utilisateur inactif depuis 30 jours :
   - Email : "Quoi de neuf chez vos artistes favoris ?" avec les 3 posts les plus populaires
-- [ ] Acheteur avec wishlist > 5 items inactif depuis 14 jours :
+- [x] Acheteur avec wishlist > 5 items inactif depuis 14 jours :
   - Push : "X oeuvres dans votre wishlist — l'une d'elles pourrait partir bientot"
-- [ ] Logique implementee dans une Edge Function cron (daily check)
-- [ ] Respect strict du RGPD : desabonnement en un clic, lien dans chaque email
+- [x] Logique implementee dans une Edge Function cron (daily check)
+- [x] Respect strict du RGPD : desabonnement en un clic, lien dans chaque email
 
 ---
 
@@ -879,8 +879,8 @@
 
 ### 23.1 — Integration Video Live
 
-- [ ] Choisir le provider : **Mux** (API simple, pricing a l'usage) ou **LiveKit** (open source, self-hostable)
-- [ ] Table `live_streams` :
+- [x] Choisir le provider : **Mux** (API simple, pricing a l'usage) ou **LiveKit** (open source, self-hostable)
+- [x] Table `live_streams` :
   ```sql
   CREATE TABLE live_streams (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -912,29 +912,29 @@
   CREATE INDEX idx_live_streams_status ON live_streams(status, started_at DESC);
   CREATE INDEX idx_live_streams_artist ON live_streams(artist_id, status);
   ```
-- [ ] RLS : lecture publique pour les streams live/ended, CRUD pour l'artiste proprietaire
+- [x] RLS : lecture publique pour les streams live/ended, CRUD pour l'artiste proprietaire
 
 ### 23.2 — Dashboard Artiste — Gestion Lives
 
-- [ ] Page `/dashboard/live` — gestion des lives :
+- [x] Page `/dashboard/live` — gestion des lives :
   - **Programmer un live** : titre, description, date/heure, oeuvre associee (optionnel)
   - **Demarrer un live** : affiche la cle de stream (RTMP) + lien OBS
   - **Live en cours** : preview du flux, compteur de viewers, chat modere
   - **Historique** : replays disponibles
-- [ ] Option "Demarrer depuis le navigateur" (WebRTC via provider SDK) — pas besoin d'OBS
-- [ ] Option de lier une oeuvre au live : "Je travaille sur cette oeuvre" → card oeuvre affichee pendant le stream
+- [x] Option "Demarrer depuis le navigateur" (WebRTC via provider SDK) — pas besoin d'OBS
+- [x] Option de lier une oeuvre au live : "Je travaille sur cette oeuvre" → card oeuvre affichee pendant le stream
 
 ### 23.3 — Experience Viewer
 
-- [ ] Composant `LivePlayer` — player video adaptatif (HLS via provider)
-- [ ] Page `/live/[streamId]` — page dediee au live :
+- [x] Composant `LivePlayer` — player video adaptatif (HLS via provider)
+- [x] Page `/live/[streamId]` — page dediee au live :
   - Player video plein ecran
   - Titre + artiste + oeuvre liee
   - Compteur de viewers en temps reel
   - Chat en temps reel (Supabase Realtime channel `live:[streamId]`)
   - Bouton "Suivre l'artiste" pendant le live
   - Bouton "Acheter cette oeuvre" si une oeuvre est liee
-- [ ] Chat live :
+- [x] Chat live :
   - Table `live_chat_messages` (ephemere, TTL 24h apres fin du stream)
   - Messages en temps reel via Supabase Realtime Broadcast
   - Reactions emoji rapides (coeur, feu, applaudissement) en overlay sur la video
@@ -942,20 +942,20 @@
 
 ### 23.4 — Decouverte des Lives
 
-- [ ] Banniere "EN DIRECT" en haut du feed si un artiste suivi est en live
-- [ ] Section "Lives en cours" dans la page Discover (priorite absolue, au-dessus du scroll vertical)
-- [ ] Notification push instantanee quand un artiste suivi demarre un live :
+- [x] Banniere "EN DIRECT" en haut du feed si un artiste suivi est en live
+- [x] Section "Lives en cours" dans la page Discover (priorite absolue, au-dessus du scroll vertical)
+- [x] Notification push instantanee quand un artiste suivi demarre un live :
   - "[Artiste] est en direct : [titre]"
   - Deep link vers `/live/[streamId]`
-- [ ] Indicateur live sur l'avatar de l'artiste (cercle rouge pulsant) — sur le feed et la page artistes
+- [x] Indicateur live sur l'avatar de l'artiste (cercle rouge pulsant) — sur le feed et la page artistes
 
 ### 23.5 — Replays
 
-- [ ] A la fin du stream, le recording est sauvegarde automatiquement (provider → R2)
-- [ ] L'artiste choisit de rendre le replay disponible ou non
-- [ ] Les replays apparaissent dans le Carnet comme un post special (type `live_replay`)
-- [ ] Le chat est sauvegarde et synchronise avec le replay (timestamps)
-- [ ] Les replays exclusifs (abonnes uniquement) sont possibles via `access_level`
+- [x] A la fin du stream, le recording est sauvegarde automatiquement (provider → R2)
+- [x] L'artiste choisit de rendre le replay disponible ou non
+- [x] Les replays apparaissent dans le Carnet comme un post special (type `live_replay`)
+- [x] Le chat est sauvegarde et synchronise avec le replay (timestamps)
+- [x] Les replays exclusifs (abonnes uniquement) sont possibles via `access_level`
 
 ---
 
@@ -965,43 +965,43 @@
 
 ### 24.1 — Dashboard Analytics Enrichi (Artiste)
 
-- [ ] Nouvelles metriques dans `/dashboard/analytics` :
+- [x] Nouvelles metriques dans `/dashboard/analytics` :
   - **Taux de conversion** : vues oeuvre → checkout → achat
   - **Sources de trafic** : feed, discover, profil direct, lien externe, recherche
   - **Engagement par type de post** : quel type (photo, video, texte) genere le plus de reactions
   - **Heures d'activite** : quand vos followers sont en ligne (pour optimiser le timing de publication)
   - **Top oeuvres** : classement par vues, wishlists, conversations initiees
   - **Revenus abonnements** : MRR, churn rate, nouveaux vs renouvellements
-- [ ] Graphiques interactifs (Recharts ameliore) :
+- [x] Graphiques interactifs (Recharts ameliore) :
   - Comparaison periodes (ce mois vs mois precedent)
   - Filtres par medium, par serie
-- [ ] Export CSV des analytics (pour les artistes qui veulent analyser eux-memes)
+- [x] Export CSV des analytics (pour les artistes qui veulent analyser eux-memes)
 
 ### 24.2 — Tendances du Marche (Public)
 
-- [ ] Page `/trends` — accessible a tous :
+- [x] Page `/trends` — accessible a tous :
   - **Mediums populaires** : classement par nombre de ventes sur 30 jours
   - **Fourchettes de prix** : distribution des ventes par tranche (< 100 EUR, 100-500, 500-2000, > 2000)
   - **Artistes en vue** : top 10 par croissance de followers sur 30 jours
   - **Villes actives** : carte des concentrations d'artistes et d'acheteurs
-- [ ] Donnees anonymisees (pas de montants individuels)
-- [ ] Mise a jour quotidienne via une vue materialisee
-- [ ] SEO : "tendances art contemporain" — page indexable
+- [x] Donnees anonymisees (pas de montants individuels)
+- [x] Mise a jour quotidienne via une vue materialisee
+- [x] SEO : "tendances art contemporain" — page indexable
 
 ### 24.3 — Estimation de Valeur (Experimentale)
 
-- [ ] Fonction RPC `estimate_artwork_value(medium, width, height, artist_follower_count, artist_sales_count)` :
+- [x] Fonction RPC `estimate_artwork_value(medium, width, height, artist_follower_count, artist_sales_count)` :
   - Basee sur les transactions historiques
   - Retourne une fourchette (prix bas, prix median, prix haut)
   - Seuil minimum : 50 ventes dans le meme medium pour activer l'estimation
-- [ ] Affichage discret sur la page de creation d'oeuvre :
+- [x] Affichage discret sur la page de creation d'oeuvre :
   - "Les oeuvres similaires se vendent entre X et Y EUR"
   - Aide l'artiste a fixer un prix competitif
-- [ ] PAS affiche aux acheteurs (pour ne pas influencer la perception de valeur)
+- [x] PAS affiche aux acheteurs (pour ne pas influencer la perception de valeur)
 
 ### 24.4 — Insights Acheteur
 
-- [ ] Page `/dashboard/insights` (acheteur) :
+- [x] Page `/dashboard/insights` (acheteur) :
   - "Vos artistes favoris" : top 5 par interactions (reactions, commentaires, temps passe)
   - "Votre collection vaut" : estimation basee sur les prix actuels des artistes (si assez de data)
   - "Artistes que vous pourriez aimer" : recommandations basees sur les gouts
