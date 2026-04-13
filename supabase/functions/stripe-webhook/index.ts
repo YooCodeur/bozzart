@@ -189,6 +189,55 @@ serve(async (req) => {
       break;
     }
 
+    // ─── Boost paye (Checkout Session) ───
+    case "checkout.session.completed": {
+      const session = event.data.object as Stripe.Checkout.Session;
+      const boostId = session.metadata?.boost_id;
+      const durationDays = Number(session.metadata?.duration_days);
+      if (!boostId || !Number.isFinite(durationDays)) break;
+
+      const startsAt = new Date();
+      const endsAt = new Date(startsAt.getTime() + durationDays * 24 * 60 * 60 * 1000);
+
+      await supabase
+        .from("artwork_boosts")
+        .update({
+          status: "active",
+          starts_at: startsAt.toISOString(),
+          ends_at: endsAt.toISOString(),
+          stripe_payment_intent_id:
+            typeof session.payment_intent === "string" ? session.payment_intent : null,
+        })
+        .eq("id", boostId);
+
+      const { data: boost } = await supabase
+        .from("artwork_boosts")
+        .select("artist_id, artwork_id")
+        .eq("id", boostId)
+        .single();
+
+      if (boost) {
+        const { data: artistProfile } = await supabase
+          .from("artist_profiles")
+          .select("user_id")
+          .eq("id", boost.artist_id)
+          .single();
+
+        if (artistProfile) {
+          await supabase.from("notifications").insert({
+            user_id: artistProfile.user_id,
+            type: "boost_activated",
+            title: "Boost active",
+            body: `Votre boost est actif jusqu'au ${endsAt.toLocaleDateString("fr-FR")}`,
+            data: { boost_id: boostId, artwork_id: boost.artwork_id },
+            deep_link: `/dashboard/artworks/${boost.artwork_id}/boost`,
+          });
+        }
+      }
+
+      break;
+    }
+
     // ─── Mise a jour compte Connect ───
     case "account.updated": {
       const account = event.data.object as Stripe.Account;
