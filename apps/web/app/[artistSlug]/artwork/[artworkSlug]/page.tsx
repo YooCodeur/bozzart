@@ -49,6 +49,19 @@ export default async function ArtworkPage({ params }: Props) {
 
   if (!artwork) notFound();
 
+  // Estimation de valeur (Phase 24.3) — opt-in via artist.show_value_estimate
+  let valueEstimate: { estimated_low_cents: number; estimated_high_cents: number; confidence: number } | null = null;
+  if (artwork.artist?.show_value_estimate) {
+    const { data: est } = await supabase
+      .from("value_estimates")
+      .select("estimated_low_cents, estimated_high_cents, confidence")
+      .eq("artwork_id", artwork.id)
+      .order("computed_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    valueEstimate = est as typeof valueEstimate;
+  }
+
   const { data: otherArtworks } = await supabase
     .from("artworks")
     .select("id, title, slug, primary_image_url, price, price_currency")
@@ -141,6 +154,23 @@ export default async function ArtworkPage({ params }: Props) {
               )}
               <WishlistButton artworkId={artwork.id} initialCount={artwork.wishlist_count} />
             </div>
+
+            {valueEstimate && (
+              <details className="mt-8 rounded-lg border bg-gray-50 p-4">
+                <summary className="cursor-pointer text-sm font-medium">Estimation de valeur</summary>
+                <div className="mt-3 text-sm text-gray-700">
+                  <p className="text-lg font-semibold">
+                    {(valueEstimate.estimated_low_cents / 100).toFixed(0)} € – {(valueEstimate.estimated_high_cents / 100).toFixed(0)} €
+                  </p>
+                  <p className="mt-1 text-xs text-gray-500">
+                    Confiance : {Math.round(valueEstimate.confidence * 100)}%
+                  </p>
+                  <p className="mt-3 text-xs italic text-gray-500">
+                    Estimation indicative basée sur des œuvres comparables du même artiste. Ne constitue pas une valeur marchande certifiée.
+                  </p>
+                </div>
+              </details>
+            )}
 
             {artwork.story_html && (
               <div className="mt-8 border-t pt-8">
