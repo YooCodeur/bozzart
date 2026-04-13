@@ -189,6 +189,65 @@ serve(async (req) => {
       break;
     }
 
+    // ─── Abonnement cree / mis a jour (Phase 18) ───
+    case "customer.subscription.created":
+    case "customer.subscription.updated": {
+      const sub = event.data.object as Stripe.Subscription;
+      const meta = sub.metadata || {};
+      const planId = meta.plan_id;
+      const artistId = meta.artist_id;
+      const subscriberId = meta.subscriber_id;
+      if (!planId || !artistId || !subscriberId) break;
+
+      const statusMap: Record<string, string> = {
+        active: "active",
+        trialing: "active",
+        past_due: "past_due",
+        unpaid: "past_due",
+        canceled: "canceled",
+        incomplete: "past_due",
+        incomplete_expired: "expired",
+        paused: "past_due",
+      };
+      const mapped = statusMap[sub.status] ?? "past_due";
+
+      await supabase
+        .from("subscriptions")
+        .upsert(
+          {
+            subscriber_id: subscriberId,
+            plan_id: planId,
+            artist_id: artistId,
+            status: mapped,
+            stripe_subscription_id: sub.id,
+            current_period_start: sub.current_period_start
+              ? new Date(sub.current_period_start * 1000).toISOString()
+              : null,
+            current_period_end: sub.current_period_end
+              ? new Date(sub.current_period_end * 1000).toISOString()
+              : null,
+            canceled_at: sub.canceled_at
+              ? new Date(sub.canceled_at * 1000).toISOString()
+              : null,
+          },
+          { onConflict: "stripe_subscription_id" },
+        );
+      break;
+    }
+
+    // ─── Abonnement supprime (Phase 18) ───
+    case "customer.subscription.deleted": {
+      const sub = event.data.object as Stripe.Subscription;
+      await supabase
+        .from("subscriptions")
+        .update({
+          status: "canceled",
+          canceled_at: new Date().toISOString(),
+        })
+        .eq("stripe_subscription_id", sub.id);
+      break;
+    }
+
     // ─── Mise a jour compte Connect ───
     case "account.updated": {
       const account = event.data.object as Stripe.Account;
