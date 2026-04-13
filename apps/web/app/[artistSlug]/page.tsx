@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { createSupabaseServerClient } from "@/lib/supabase-ssr";
 import { ArtistProfileView } from "@/components/artist/artist-profile-view";
+import { SupportArtistSection } from "@/components/artist/support-artist-section";
 import { TrackView } from "@/components/tracking/track-view";
 
 interface Props {
@@ -55,6 +56,52 @@ export default async function ArtistProfilePage({ params }: Props) {
     .order("created_at", { ascending: false })
     .limit(10);
 
+  // Phase 17 : stories visuelles publiees pour cet artiste
+  const { data: storyRows } = await supabase
+    .from("artwork_stories")
+    .select("artwork_id, slides, created_at, artworks!inner(title, primary_image_url, artist_id, status)")
+    .eq("is_published", true)
+    .eq("artworks.artist_id", artist.id)
+    .eq("artworks.status", "published")
+    .order("created_at", { ascending: false });
+
+  // Phase 18 : plans d'abonnement publics de cet artiste + compte d'abonnes actifs
+  const { data: planRows } = await supabase
+    .from("subscription_plans")
+    .select("id, artist_id, name, description, price_monthly, currency, benefits, max_subscribers")
+    .eq("artist_id", artist.id)
+    .eq("is_active", true)
+    .order("price_monthly", { ascending: true });
+
+  const plans = await Promise.all(
+    (planRows ?? []).map(async (p: any) => {
+      const { count } = await supabase
+        .from("subscriptions")
+        .select("id", { count: "exact", head: true })
+        .eq("plan_id", p.id)
+        .eq("status", "active");
+      return {
+        id: p.id as string,
+        artist_id: p.artist_id as string,
+        name: p.name as string,
+        description: (p.description as string | null) ?? null,
+        price_monthly: p.price_monthly as number,
+        currency: p.currency as string,
+        benefits: Array.isArray(p.benefits) ? (p.benefits as string[]) : [],
+        max_subscribers: (p.max_subscribers as number | null) ?? null,
+        subscriber_count: count ?? 0,
+      };
+    }),
+  );
+
+  const stories = (storyRows ?? []).map((r: any) => ({
+    artwork_id: r.artwork_id as string,
+    artwork_title: r.artworks?.title as string,
+    primary_image_url: (r.artworks?.primary_image_url as string) ?? null,
+    slides: (r.slides as any[]) ?? [],
+    created_at: r.created_at as string,
+  }));
+
   // JSON-LD
   const jsonLd = {
     "@context": "https://schema.org",
@@ -77,7 +124,15 @@ export default async function ArtistProfilePage({ params }: Props) {
         artist={artist}
         artworks={artworks || []}
         posts={posts || []}
+        stories={stories}
       />
+      <div id="soutenir" className="max-w-5xl mx-auto px-4">
+        <SupportArtistSection
+          artistId={artist.id}
+          artistName={artist.full_name ?? artist.slug}
+          plans={plans}
+        />
+      </div>
     </>
   );
 }
