@@ -49,6 +49,16 @@ export default async function ArtworkPage({ params }: Props) {
 
   if (!artwork) notFound();
 
+  // Phase 15.2 — Social proof : nombre de collectionneurs distincts
+  // possedant une oeuvre de cet artiste.
+  const { count: collectorCountRaw } = await supabase
+    .from("transactions")
+    .select("buyer_id", { count: "exact", head: true })
+    .eq("artist_id", artwork.artist_id)
+    .eq("status", "completed")
+    .not("buyer_id", "is", null);
+  const collectorCount = collectorCountRaw || 0;
+
   const { data: otherArtworks } = await supabase
     .from("artworks")
     .select("id, title, slug, primary_image_url, price, price_currency")
@@ -128,6 +138,13 @@ export default async function ArtworkPage({ params }: Props) {
 
             {artwork.is_price_visible && (
               <p className="mt-6 text-2xl font-bold">{formatPrice(artwork.price, artwork.price_currency)}</p>
+            )}
+
+            {collectorCount > 0 && (
+              <p className="mt-4 inline-flex items-center gap-2 rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-800">
+                <span aria-hidden="true">★</span>
+                {collectorCount} collectionneur{collectorCount !== 1 ? "s" : ""} possède{collectorCount !== 1 ? "nt" : ""} une œuvre de cet artiste
+              </p>
             )}
 
             <div className="mt-8 flex items-center gap-3">
