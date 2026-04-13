@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { createSupabaseServerClient } from "@/lib/supabase-ssr";
 import { ArtistProfileView } from "@/components/artist/artist-profile-view";
 import { TrackView } from "@/components/tracking/track-view";
+import { ArtistReplaysSection } from "@/components/live/artist-replays-section";
 
 interface Props {
   params: { artistSlug: string };
@@ -55,6 +56,14 @@ export default async function ArtistProfilePage({ params }: Props) {
     .order("created_at", { ascending: false })
     .limit(10);
 
+  const { data: replays } = await supabase
+    .from("live_streams")
+    .select("id, title, description, ended_at, recording_url, provider_playback_id")
+    .eq("artist_id", artist.id)
+    .eq("status", "ended")
+    .order("ended_at", { ascending: false })
+    .limit(24);
+
   // JSON-LD
   const jsonLd = {
     "@context": "https://schema.org",
@@ -78,6 +87,7 @@ export default async function ArtistProfilePage({ params }: Props) {
         artworks={artworks || []}
         posts={posts || []}
       />
+      <ArtistReplaysSection replays={replays || []} />
     </>
   );
 }
