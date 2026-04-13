@@ -18,7 +18,7 @@ interface ArtistProfileViewProps {
 }
 
 export function ArtistProfileView({ artist, artworks, posts }: ArtistProfileViewProps) {
-  const [tab, setTab] = useState<Tab>("oeuvres");
+  const [tab, setTab] = useState<Tab>("carnet");
   const [isFollowing, setIsFollowing] = useState(false);
   const [followLoading, setFollowLoading] = useState(false);
   const { user } = useAuth();
@@ -104,7 +104,7 @@ export function ArtistProfileView({ artist, artworks, posts }: ArtistProfileView
       {/* Navigation */}
       <nav className="border-b bg-white">
         <div className="mx-auto flex max-w-4xl" role="tablist">
-          {(["oeuvres", "carnet", "histoire"] as Tab[]).map((t) => (
+          {(["carnet", "oeuvres", "histoire"] as Tab[]).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -155,6 +155,15 @@ export function ArtistProfileView({ artist, artworks, posts }: ArtistProfileView
 
         {tab === "carnet" && (
           <div className="space-y-8">
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={() => setTab("oeuvres")}
+                className="rounded-md border border-gray-300 bg-white px-4 py-1.5 text-sm hover:bg-gray-50"
+              >
+                Voir toutes les oeuvres ({artworks.length})
+              </button>
+            </div>
             {posts.map((post) => (
               <article key={post.id as string} className="border-b pb-8">
                 <p className="text-gray-800">{post.caption as string}</p>
