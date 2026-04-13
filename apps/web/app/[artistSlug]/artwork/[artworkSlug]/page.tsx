@@ -9,6 +9,7 @@ import { WishlistButton } from "@/components/artwork/wishlist-button";
 import { ContactArtistButton } from "@/components/artwork/contact-artist-button";
 import { TrackView } from "@/components/tracking/track-view";
 import { formatPrice } from "@bozzart/core";
+import { GuestConversionPrompt } from "@/components/funnel/GuestConversionPrompt";
 
 interface Props {
   params: { artistSlug: string; artworkSlug: string };
@@ -49,6 +50,16 @@ export default async function ArtworkPage({ params }: Props) {
 
   if (!artwork) notFound();
 
+  // Boost actif (badge "Mis en avant")
+  const { data: activeBoost } = await supabase
+    .from("artwork_boosts")
+    .select("ends_at")
+    .eq("artwork_id", artwork.id)
+    .eq("status", "active")
+    .order("ends_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
   const { data: otherArtworks } = await supabase
     .from("artworks")
     .select("id, title, slug, primary_image_url, price, price_currency")
@@ -78,6 +89,7 @@ export default async function ArtworkPage({ params }: Props) {
     <main className="min-h-screen bg-background">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/<\/script/gi, "<\\/script") }} />
       <TrackView type="artwork" artistId={artwork.artist_id} />
+      <GuestConversionPrompt artworkId={artwork.id} artworkTitle={artwork.title} />
 
       <div className="mx-auto max-w-6xl px-8 py-12">
         <Breadcrumbs items={[
@@ -118,6 +130,11 @@ export default async function ArtworkPage({ params }: Props) {
               {artwork.artist.is_verified && <span className="ml-1 text-blue-500" role="img" aria-label="Artiste vérifié">✓</span>}
             </Link>
             <h1 className="mt-1 text-3xl font-bold">{artwork.title}</h1>
+            {activeBoost?.ends_at && (
+              <span className="mt-2 inline-flex items-center gap-1 rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-800">
+                ★ Booste jusqu&apos;au {new Date(activeBoost.ends_at).toLocaleDateString("fr-FR")}
+              </span>
+            )}
 
             <div className="mt-4 space-y-1 text-sm text-gray-600">
               {artwork.medium && <p className="capitalize">{artwork.medium}</p>}
