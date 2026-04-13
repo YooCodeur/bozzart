@@ -49,8 +49,8 @@
 
 ### 12.1 — Configuration PWA (Web)
 
-- [ ] Installer `next-pwa` (ou `@serwist/next`) dans `apps/web`
-- [ ] Creer le fichier `manifest.json` :
+- [x] Installer `next-pwa` (ou `@serwist/next`) dans `apps/web`
+- [x] Creer le fichier `manifest.json` :
   - `name` : "Bozzart"
   - `short_name` : "Bozzart"
   - `start_url` : "/"
@@ -59,25 +59,25 @@
   - `theme_color` : "#000000"
   - `icons` : 192x192, 512x512 (PNG + maskable)
   - `screenshots` : 2 screenshots pour l'install prompt mobile
-- [ ] Configurer le Service Worker :
+- [x] Configurer le Service Worker :
   - Cache statique : pages HTML, CSS, JS bundles
   - Cache dynamique : images artworks (stale-while-revalidate)
   - Offline fallback : page "Vous etes hors connexion"
-- [ ] Ajouter le meta tag `<link rel="manifest" href="/manifest.json">` dans le root layout
-- [ ] Tester l'installation sur iOS Safari et Android Chrome
+- [x] Ajouter le meta tag `<link rel="manifest" href="/manifest.json">` dans le root layout
+- [x] Tester l'installation sur iOS Safari et Android Chrome
 
 ### 12.2 — Notifications Push Multi-Plateforme
 
-- [ ] **Web** : Implementer le Web Push API avec VAPID keys
-- [ ] **Web** : Creer un Service Worker handler pour les push events
-- [ ] **Mobile** : Maintenir et ameliorer les Expo Push Notifications existantes
-- [ ] Unifier la logique `send-push-notification` pour supporter les deux canaux :
+- [x] **Web** : Implementer le Web Push API avec VAPID keys
+- [x] **Web** : Creer un Service Worker handler pour les push events
+- [x] **Mobile** : Maintenir et ameliorer les Expo Push Notifications existantes
+- [x] Unifier la logique `send-push-notification` pour supporter les deux canaux :
   - Web Push (VAPID) pour les utilisateurs web/PWA
   - Expo Push pour les utilisateurs iOS/Android
-- [ ] Table `push_tokens` : ajouter un champ `platform` (web, ios, android) pour distinguer les tokens
-- [ ] Un utilisateur peut avoir plusieurs tokens (web + mobile) — envoyer sur tous les canaux actifs
-- [ ] **Web** : Prompt d'autorisation push apres la 3eme visite (pas au premier chargement)
-- [ ] Payload unifie : titre, body, icon (avatar artiste), URL/deep link de redirection, badge count
+- [x] Table `push_tokens` : ajouter un champ `platform` (web, ios, android) pour distinguer les tokens
+- [x] Un utilisateur peut avoir plusieurs tokens (web + mobile) — envoyer sur tous les canaux actifs
+- [x] **Web** : Prompt d'autorisation push apres la 3eme visite (pas au premier chargement)
+- [x] Payload unifie : titre, body, icon (avatar artiste), URL/deep link de redirection, badge count
 
 ### 12.3 — Experience Mobile-First (Web)
 
@@ -107,12 +107,12 @@
 
 ### 12.5 — Packages Partages (Strategie DRY)
 
-- [ ] Identifier les modules partageables entre web et mobile :
+- [x] Identifier les modules partageables entre web et mobile :
   - `packages/shared` : types TypeScript, constantes, validations (Zod schemas)
   - `packages/api` : client Supabase, hooks de requetes, logique metier
-- [ ] Extraire la logique commune existante dans ces packages
-- [ ] Configurer les imports dans `apps/web` et `apps/mobile` via le workspace pnpm
-- [ ] Convention : toute nouvelle feature doit d'abord implementer la logique dans `packages/`, puis l'UI dans chaque app
+- [x] Extraire la logique commune existante dans ces packages
+- [x] Configurer les imports dans `apps/web` et `apps/mobile` via le workspace pnpm
+- [x] Convention : toute nouvelle feature doit d'abord implementer la logique dans `packages/`, puis l'UI dans chaque app
 
 ---
 
@@ -122,12 +122,12 @@
 
 ### 13.1 — Nouveau Feed Principal : `/feed`
 
-- [ ] Creer la page `/feed` — le feed social principal de Bozzart
-- [ ] Le feed affiche un melange de :
+- [x] Creer la page `/feed` — le feed social principal de Bozzart
+- [x] Le feed affiche un melange de :
   - Posts Carnet des artistes suivis (priorite haute)
   - Nouvelles oeuvres publiees par les artistes suivis (priorite moyenne)
   - Posts Carnet populaires d'artistes non suivis (priorite basse, decouverte)
-- [ ] Chaque post affiche :
+- [x] Chaque post affiche :
   - Avatar + nom artiste (cliquable → profil)
   - Media (photo, video, audio player)
   - Caption + body (truncated avec "Lire la suite")
@@ -135,51 +135,51 @@
   - Compteur commentaires (cliquable → expand)
   - Timestamp relatif ("il y a 2h", "hier")
   - Si le post est lie a une oeuvre : card oeuvre cliquable (image + titre, PAS de prix)
-- [ ] Infinite scroll (cursor-based pagination, 10 posts par batch)
-- [ ] Pull-to-refresh (web mobile PWA + natif Expo)
-- [ ] Etat vide pour nouveaux utilisateurs : "Suivez des artistes pour remplir votre feed" + suggestions
+- [x] Infinite scroll (cursor-based pagination, 10 posts par batch)
+- [x] Pull-to-refresh (web mobile PWA + natif Expo)
+- [x] Etat vide pour nouveaux utilisateurs : "Suivez des artistes pour remplir votre feed" + suggestions
 
 ### 13.2 — Restructuration de la Navigation
 
-- [ ] Navigation principale (header web / bottom bar mobile web + Expo) :
+- [x] Navigation principale (header web / bottom bar mobile web + Expo) :
   - **Feed** (`/feed`) — le coeur du reseau social ← NOUVEAU defaut post-login
   - **Decouvrir** (`/discover`) — decouverte plein ecran (inchange)
   - **Artistes** (`/artists`) — annuaire (inchange)
   - **Messages** (`/dashboard/messages`) — messagerie
   - **Profil** (`/dashboard`) — dashboard personnel
-- [ ] Redirection post-login : tous les utilisateurs (artistes ET acheteurs) arrivent sur `/feed`
-- [ ] Le feed remplace la homepage pour les utilisateurs connectes
-- [ ] Homepage (`/`) reste la landing page pour les visiteurs non connectes
+- [x] Redirection post-login : tous les utilisateurs (artistes ET acheteurs) arrivent sur `/feed`
+- [x] Le feed remplace la homepage pour les utilisateurs connectes
+- [x] Homepage (`/`) reste la landing page pour les visiteurs non connectes
 
 ### 13.3 — Creation de Posts Enrichie
 
-- [ ] Bouton "Publier" flottant (FAB) accessible depuis le feed — raccourci vers `/dashboard/carnet/new`
-- [ ] Types de posts enrichis :
+- [x] Bouton "Publier" flottant (FAB) accessible depuis le feed — raccourci vers `/dashboard/carnet/new`
+- [x] Types de posts enrichis :
   - **Process** : photos avant/pendant/apres (carousel swipeable, max 10 images)
   - **Video** : player inline avec autoplay muted dans le feed
   - **Audio** : waveform player custom (pour les artistes musicaux ou les reflexions orales)
   - **Texte** : reflexions longues avec mise en forme TipTap
   - **Lien oeuvre** : associe le post a une oeuvre publiee (card preview automatique)
-- [ ] Carousel multi-images : composant `PostCarousel` avec dots indicator + swipe
-- [ ] Preview avant publication : "Voici ce que vos followers verront"
-- [ ] Brouillons de posts : sauvegarder en draft et finir plus tard
+- [x] Carousel multi-images : composant `PostCarousel` avec dots indicator + swipe
+- [x] Preview avant publication : "Voici ce que vos followers verront"
+- [x] Brouillons de posts : sauvegarder en draft et finir plus tard
 
 ### 13.4 — Engagement sur les Posts
 
-- [ ] Commentaires inline : expand/collapse directement dans le feed (pas de navigation)
-- [ ] Reponses a un commentaire : thread simple (1 niveau max, pas de recursion)
-- [ ] Reaction avec animation : feedback visuel quand on clique (scale + couleur)
-- [ ] Compteurs en temps reel : Supabase Realtime sur `reactions` et `comments` (INSERT/DELETE)
-- [ ] Mention d'artiste dans les commentaires : `@artistSlug` detecte et lien vers le profil
+- [x] Commentaires inline : expand/collapse directement dans le feed (pas de navigation)
+- [x] Reponses a un commentaire : thread simple (1 niveau max, pas de recursion)
+- [x] Reaction avec animation : feedback visuel quand on clique (scale + couleur)
+- [x] Compteurs en temps reel : Supabase Realtime sur `reactions` et `comments` (INSERT/DELETE)
+- [x] Mention d'artiste dans les commentaires : `@artistSlug` detecte et lien vers le profil
 
 ### 13.5 — Feed Artiste sur le Profil Public
 
-- [ ] Le profil public `[artistSlug]` reorganise ses onglets :
+- [x] Le profil public `[artistSlug]` reorganise ses onglets :
   - **Carnet** (defaut) — feed chronologique des posts
   - **Oeuvres** — grille du catalogue
   - **Histoire** — biographie (stories visuelles, cf Phase 17)
-- [ ] Le Carnet devient l'onglet par defaut (etait "Oeuvres" avant)
-- [ ] Bouton "Voir toutes les oeuvres" en haut du Carnet pour ne pas cacher le catalogue
+- [x] Le Carnet devient l'onglet par defaut (etait "Oeuvres" avant)
+- [x] Bouton "Voir toutes les oeuvres" en haut du Carnet pour ne pas cacher le catalogue
 
 ---
 
@@ -189,7 +189,7 @@
 
 ### 14.1 — Score de Pertinence
 
-- [ ] Creer une vue materialisee `artwork_scores` dans PostgreSQL :
+- [x] Creer une vue materialisee `artwork_scores` dans PostgreSQL :
   ```sql
   CREATE MATERIALIZED VIEW artwork_scores AS
   SELECT
@@ -218,8 +218,8 @@
   JOIN artist_profiles ap ON ap.user_id = a.artist_id
   WHERE a.status = 'published';
   ```
-- [ ] Creer un cron job Supabase (pg_cron) pour rafraichir la vue toutes les heures
-- [ ] Ajouter un index sur `(popularity_score + freshness_score + artist_score) DESC`
+- [x] Creer un cron job Supabase (pg_cron) pour rafraichir la vue toutes les heures
+- [x] Ajouter un index sur `(popularity_score + freshness_score + artist_score) DESC`
 
 ### 14.2 — Feed Personnalise par Utilisateur
 
@@ -276,50 +276,50 @@
 
 ### 15.1 — Acheteur suit Acheteur
 
-- [ ] Modifier la table `follows` : retirer la contrainte qui lie `following_id` uniquement aux artistes
+- [x] Modifier la table `follows` : retirer la contrainte qui lie `following_id` uniquement aux artistes
   ```sql
   -- follows existant : follower_id → following_id
   -- Actuellement, following_id est implicitement un artiste
   -- Nouveau : following_id peut etre n'importe quel user (artiste ou acheteur)
   ```
-- [ ] Adapter les RLS : un utilisateur peut suivre n'importe quel autre utilisateur
-- [ ] UI : bouton "Suivre" sur les profils acheteurs (page collection publique)
-- [ ] Feed `/feed` : inclure l'activite des acheteurs suivis (achats, wishlists, reactions)
+- [x] Adapter les RLS : un utilisateur peut suivre n'importe quel autre utilisateur
+- [x] UI : bouton "Suivre" sur les profils acheteurs (page collection publique)
+- [x] Feed `/feed` : inclure l'activite des acheteurs suivis (achats, wishlists, reactions)
 
 ### 15.2 — Collections Publiques d'Acheteurs
 
-- [ ] Ajouter un champ `is_collection_public` (boolean, default false) dans `profiles`
-- [ ] Page publique de collection : `/collector/[username]`
+- [x] Ajouter un champ `is_collection_public` (boolean, default false) dans `profiles`
+- [x] Page publique de collection : `/collector/[username]`
   - Grille des oeuvres acquises (image + titre + artiste)
   - Nombre d'oeuvres, nombre de followers
   - Bouton "Suivre ce collectionneur"
   - Bio courte du collectionneur (opt-in)
-- [ ] Toggle dans les settings : "Rendre ma collection publique"
-- [ ] Sur la page oeuvre : "X collectionneurs possedent une oeuvre de cet artiste" (social proof)
-- [ ] SEO : page indexable si publique
+- [x] Toggle dans les settings : "Rendre ma collection publique"
+- [x] Sur la page oeuvre : "X collectionneurs possedent une oeuvre de cet artiste" (social proof)
+- [x] SEO : page indexable si publique
 
 ### 15.3 — Profil Unifie (Artiste + Acheteur)
 
-- [ ] Un artiste peut aussi etre acheteur (et collectionneur)
-- [ ] Profil public unifie :
+- [x] Un artiste peut aussi etre acheteur (et collectionneur)
+- [x] Profil public unifie :
   - Artiste : onglets Carnet / Oeuvres / Collection / Histoire
   - Acheteur/Collectionneur : onglets Collection / Artistes suivis
-- [ ] Un acheteur qui publie des posts dans le Carnet ? Non — le Carnet reste reserve aux artistes. Les acheteurs participent via commentaires, reactions, et partages.
+- [x] Un acheteur qui publie des posts dans le Carnet ? Non — le Carnet reste reserve aux artistes. Les acheteurs participent via commentaires, reactions, et partages.
 
 ### 15.4 — Suggestions de Connexions
 
-- [ ] Encart "Artistes a decouvrir" dans le feed :
+- [x] Encart "Artistes a decouvrir" dans le feed :
   - Artistes suivis par les gens que vous suivez (graph 2nd degree)
   - Artistes du meme medium que vos wishlists
   - Artistes proches geographiquement
-- [ ] Encart "Collectionneurs avec des gouts similaires" :
+- [x] Encart "Collectionneurs avec des gouts similaires" :
   - Acheteurs qui ont wishliste les memes oeuvres que vous
-- [ ] Afficher 3 suggestions max, refresh a chaque visite
-- [ ] Bouton "Suivre" inline dans les suggestions
+- [x] Afficher 3 suggestions max, refresh a chaque visite
+- [x] Bouton "Suivre" inline dans les suggestions
 
 ### 15.5 — Schema BDD Social
 
-- [ ] Nouvelle migration SQL :
+- [x] Nouvelle migration SQL :
   ```sql
   -- Collections publiques
   ALTER TABLE profiles ADD COLUMN is_collection_public BOOLEAN DEFAULT false;
@@ -347,7 +347,7 @@
 
 ### 16.1 — Table d'Activite Sociale
 
-- [ ] Creer la table `social_activities` :
+- [x] Creer la table `social_activities` :
   ```sql
   CREATE TABLE social_activities (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -374,8 +374,8 @@
   CREATE INDEX idx_social_activities_user ON social_activities(user_id, created_at DESC);
   CREATE INDEX idx_social_activities_type ON social_activities(activity_type, created_at DESC);
   ```
-- [ ] RLS : lecture publique sur `is_public = true`, ecriture via triggers uniquement (service_role)
-- [ ] Triggers pour alimenter automatiquement :
+- [x] RLS : lecture publique sur `is_public = true`, ecriture via triggers uniquement (service_role)
+- [x] Triggers pour alimenter automatiquement :
   - INSERT sur `transactions` (status = completed) → `purchased_artwork`
   - INSERT sur `follows` → `followed_artist` ou `followed_collector`
   - INSERT sur `reactions` → `reacted_to_post`
@@ -385,37 +385,37 @@
 
 ### 16.2 — Activity Feed dans le Feed Principal
 
-- [ ] Intercaler les activites sociales dans `/feed` (entre les posts Carnet) :
+- [x] Intercaler les activites sociales dans `/feed` (entre les posts Carnet) :
   - "[Avatar] **Marie** a achete ***Coucher de soleil*** de **Lucas**" — card avec miniature oeuvre
   - "[Avatar] **3 personnes que vous suivez** ont reagi au dernier post de **Sophie**" — groupement
   - "[Avatar] **Pierre** suit maintenant **Amelie**" — simple ligne
-- [ ] Ratio dans le feed : 60% posts Carnet, 25% activites sociales, 15% suggestions
-- [ ] Les achats ne sont visibles que si l'acheteur a une collection publique (`is_collection_public = true`)
-- [ ] Groupement intelligent : "Marie et 4 autres ont reagi" au lieu de 5 lignes separees
+- [x] Ratio dans le feed : 60% posts Carnet, 25% activites sociales, 15% suggestions
+- [x] Les achats ne sont visibles que si l'acheteur a une collection publique (`is_collection_public = true`)
+- [x] Groupement intelligent : "Marie et 4 autres ont reagi" au lieu de 5 lignes separees
 
 ### 16.3 — Social Proof sur les Pages Cles
 
-- [ ] Page oeuvre (`[artistSlug]/artwork/[artworkSlug]`) :
+- [x] Page oeuvre (`[artistSlug]/artwork/[artworkSlug]`) :
   - "X personnes ont cette oeuvre en wishlist"
   - "Derniere vente de cet artiste : il y a X jours"
   - "Y personnes suivent cet artiste"
   - Avatars des premiers collectionneurs (si collection publique)
-- [ ] Page artiste (`[artistSlug]`) :
+- [x] Page artiste (`[artistSlug]`) :
   - "X oeuvres vendues" (si l'artiste n'est pas en mode Silence)
   - "Suivi par [noms de collectionneurs connus]"
   - "Actif il y a X heures" (derniere publication)
-- [ ] Page Discover :
+- [x] Page Discover :
   - Micro-badge "Populaire" si une oeuvre a un score eleve
   - Micro-badge "Nouveau" si publiee il y a moins de 48h
 
 ### 16.4 — Partage Social (Repost)
 
-- [ ] La reaction "Partager" cree un **repost** dans le feed du partageur :
+- [x] La reaction "Partager" cree un **repost** dans le feed du partageur :
   - L'oeuvre/post original apparait dans le feed des followers du partageur
   - Attribution : "Partage par [nom]" avec lien vers le partageur
   - Le partage est une entree dans `social_activities` (type `shared_artwork`)
-- [ ] Partage externe : bouton copier le lien + share API native (Expo `expo-sharing` + web `navigator.share()`)
-- [ ] Compteur de partages visible sur le post original
+- [x] Partage externe : bouton copier le lien + share API native (Expo `expo-sharing` + web `navigator.share()`)
+- [x] Compteur de partages visible sur le post original
 
 ---
 
@@ -425,7 +425,7 @@
 
 ### 17.1 — Format Story
 
-- [ ] Creer la table `artwork_stories` :
+- [x] Creer la table `artwork_stories` :
   ```sql
   CREATE TABLE artwork_stories (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -437,39 +437,39 @@
     updated_at TIMESTAMPTZ DEFAULT NOW()
   );
   ```
-- [ ] RLS : lecture publique si published, CRUD proprietaire
-- [ ] Un artwork peut avoir 0 ou 1 story (one-to-one)
+- [x] RLS : lecture publique si published, CRUD proprietaire
+- [x] Un artwork peut avoir 0 ou 1 story (one-to-one)
 
 ### 17.2 — Editeur de Stories (Dashboard)
 
-- [ ] Page `/dashboard/artworks/[id]/story` — editeur visuel de slides
-- [ ] Types de slides :
+- [x] Page `/dashboard/artworks/[id]/story` — editeur visuel de slides
+- [x] Types de slides :
   - **Image + Caption** : photo de process avec texte overlay ("Pourquoi j'ai peint ca")
   - **Texte plein** : fond colore + texte centre (reflexion, citation)
   - **Video** : clip court (30s max) — l'artiste raconte
   - **Avant/Apres** : slider comparatif (deux images superposees)
   - **Palette** : les couleurs utilisees (extraction automatique ou manuelle)
-- [ ] Drag & drop pour reordonner les slides
-- [ ] Preview mobile (viewport 375px) dans l'editeur
-- [ ] Max 12 slides par story
-- [ ] Upload images directement dans le slide (Supabase Storage, bucket `stories`)
+- [x] Drag & drop pour reordonner les slides
+- [x] Preview mobile (viewport 375px) dans l'editeur
+- [x] Max 12 slides par story
+- [x] Upload images directement dans le slide (Supabase Storage, bucket `stories`)
 
 ### 17.3 — Lecteur de Stories
 
-- [ ] Composant `StoryViewer` — plein ecran, tap pour avancer, swipe pour quitter
-- [ ] Barre de progression en haut (segments par slide, comme Instagram Stories)
-- [ ] Auto-advance sur les slides texte (5 secondes), pause sur les slides video
-- [ ] Tap gauche = slide precedent, tap droit = slide suivant
-- [ ] Swipe down = fermer
-- [ ] Sur la page oeuvre : bouton "Voir l'histoire" → ouvre le StoryViewer
-- [ ] Dans le feed : si un post est lie a une oeuvre qui a une story → indicateur visuel (cercle colore autour de l'image)
+- [x] Composant `StoryViewer` — plein ecran, tap pour avancer, swipe pour quitter
+- [x] Barre de progression en haut (segments par slide, comme Instagram Stories)
+- [x] Auto-advance sur les slides texte (5 secondes), pause sur les slides video
+- [x] Tap gauche = slide precedent, tap droit = slide suivant
+- [x] Swipe down = fermer
+- [x] Sur la page oeuvre : bouton "Voir l'histoire" → ouvre le StoryViewer
+- [x] Dans le feed : si un post est lie a une oeuvre qui a une story → indicateur visuel (cercle colore autour de l'image)
 
 ### 17.4 — Stories sur le Profil Artiste
 
-- [ ] Onglet "Histoire" du profil artiste : les chapitres existants (StoryChapters) + les stories des oeuvres
-- [ ] Timeline visuelle : chaque oeuvre qui a une story est un point sur la timeline
-- [ ] Click sur un point → ouvre le StoryViewer de cette oeuvre
-- [ ] L'histoire de l'artiste (bio longue) reste accessible mais n'est plus le format principal
+- [x] Onglet "Histoire" du profil artiste : les chapitres existants (StoryChapters) + les stories des oeuvres
+- [x] Timeline visuelle : chaque oeuvre qui a une story est un point sur la timeline
+- [x] Click sur un point → ouvre le StoryViewer de cette oeuvre
+- [x] L'histoire de l'artiste (bio longue) reste accessible mais n'est plus le format principal
 
 ---
 
@@ -479,7 +479,7 @@
 
 ### 18.1 — Schema BDD Abonnements
 
-- [ ] Creer les tables :
+- [x] Creer les tables :
   ```sql
   -- Plans d'abonnement par artiste
   CREATE TABLE subscription_plans (
@@ -514,8 +514,8 @@
   CREATE INDEX idx_subscriptions_artist ON subscriptions(artist_id, status);
   CREATE INDEX idx_subscriptions_subscriber ON subscriptions(subscriber_id, status);
   ```
-- [ ] RLS : plans visibles publiquement, abonnements visibles par artiste + subscriber
-- [ ] Ajouter un champ `access_level` dans `carnet_posts` :
+- [x] RLS : plans visibles publiquement, abonnements visibles par artiste + subscriber
+- [x] Ajouter un champ `access_level` dans `carnet_posts` :
   ```sql
   ALTER TABLE carnet_posts ADD COLUMN access_level TEXT
     DEFAULT 'public'
@@ -524,41 +524,41 @@
 
 ### 18.2 — Integration Stripe Subscriptions
 
-- [ ] API route `POST /api/stripe/create-subscription` :
+- [x] API route `POST /api/stripe/create-subscription` :
   - Cree un Stripe Subscription avec `application_fee_percent: 15` (la plateforme prend 15% sur les abonnements)
   - Le paiement va sur le compte Connect de l'artiste
   - Retourne le `client_secret` pour confirmer cote client
-- [ ] API route `POST /api/stripe/cancel-subscription` :
+- [x] API route `POST /api/stripe/cancel-subscription` :
   - Annule a la fin de la periode en cours (pas immediat)
-- [ ] Webhook Stripe : gerer `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.payment_failed`
-- [ ] Maj automatique du `status` dans la table `subscriptions`
+- [x] Webhook Stripe : gerer `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.payment_failed`
+- [x] Maj automatique du `status` dans la table `subscriptions`
 
 ### 18.3 — Dashboard Artiste — Gestion Abonnements
 
-- [ ] Page `/dashboard/subscriptions` — gerer les plans :
+- [x] Page `/dashboard/subscriptions` — gerer les plans :
   - Creer/modifier un plan (nom, prix, description, avantages)
   - Voir le nombre d'abonnes actifs + revenus mensuels
   - Graphique evolution abonnes sur 30/90 jours
-- [ ] Max 3 plans par artiste (simplicite)
-- [ ] Minimum 3 EUR/mois, maximum 50 EUR/mois
+- [x] Max 3 plans par artiste (simplicite)
+- [x] Minimum 3 EUR/mois, maximum 50 EUR/mois
 
 ### 18.4 — Experience Abonne
 
-- [ ] Page profil artiste : encart "Soutenir [artiste]" avec les plans disponibles
+- [x] Page profil artiste : encart "Soutenir [artiste]" avec les plans disponibles
   - Card par plan : prix, avantages, bouton "S'abonner"
   - Nombre d'abonnes visible ("Rejoint par X personnes")
-- [ ] Posts exclusifs dans le feed : cadenas + blur + "Reservé aux abonnés" avec CTA
-- [ ] Badge "Abonne" a cote du nom dans les commentaires (reconnaissance sociale)
-- [ ] Fil exclusif accessible depuis le profil artiste (onglet filtre)
+- [x] Posts exclusifs dans le feed : cadenas + blur + "Reservé aux abonnés" avec CTA
+- [x] Badge "Abonne" a cote du nom dans les commentaires (reconnaissance sociale)
+- [x] Fil exclusif accessible depuis le profil artiste (onglet filtre)
 
 ### 18.5 — Publication de Contenu Exclusif
 
-- [ ] Dans le formulaire de creation de post (`/dashboard/carnet/new`) :
+- [x] Dans le formulaire de creation de post (`/dashboard/carnet/new`) :
   - Selecteur d'acces : "Public" / "Followers uniquement" / "Abonnes uniquement"
   - Preview de qui pourra voir le post
-- [ ] Posts `followers` : visibles par les utilisateurs qui suivent l'artiste
-- [ ] Posts `subscribers` : visibles uniquement par les abonnes payants
-- [ ] Les reactions et commentaires restent visibles par tous (pour creer l'envie)
+- [x] Posts `followers` : visibles par les utilisateurs qui suivent l'artiste
+- [x] Posts `subscribers` : visibles uniquement par les abonnes payants
+- [x] Les reactions et commentaires restent visibles par tous (pour creer l'envie)
 
 ---
 
@@ -568,7 +568,7 @@
 
 ### 19.1 — Systeme de Commandes
 
-- [ ] Creer la table `custom_orders` :
+- [x] Creer la table `custom_orders` :
   ```sql
   CREATE TABLE custom_orders (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -602,38 +602,38 @@
     updated_at TIMESTAMPTZ DEFAULT NOW()
   );
   ```
-- [ ] RLS : CRUD par buyer_id et artist_id participants
+- [x] RLS : CRUD par buyer_id et artist_id participants
 
 ### 19.2 — Flow Acheteur
 
-- [ ] Bouton "Commander une oeuvre sur mesure" sur le profil artiste (si l'artiste accepte les commandes)
-- [ ] Formulaire de demande :
+- [x] Bouton "Commander une oeuvre sur mesure" sur le profil artiste (si l'artiste accepte les commandes)
+- [x] Formulaire de demande :
   - Description libre (ce que l'acheteur veut)
   - Medium souhaite (select depuis les mediums de l'artiste)
   - Dimensions souhaitees (optionnel)
   - Budget indicatif (fourchette)
   - Images de reference (upload, max 5)
-- [ ] Soumission → cree une conversation automatiquement + notification a l'artiste
+- [x] Soumission → cree une conversation automatiquement + notification a l'artiste
 
 ### 19.3 — Flow Artiste
 
-- [ ] Page `/dashboard/commissions` — liste des commandes recues avec filtres par statut
-- [ ] Actions par commande :
+- [x] Page `/dashboard/commissions` — liste des commandes recues avec filtres par statut
+- [x] Actions par commande :
   - **Repondre** → ouvre la conversation
   - **Proposer un prix** → formulaire avec montant + delai estime
   - **Refuser** → avec message optionnel
   - **Marquer en cours** → l'artiste commence le travail
   - **Envoyer un apercu** → upload image de l'oeuvre en cours (visible uniquement par l'acheteur)
   - **Terminer** → envoie un lien de paiement via la messagerie
-- [ ] Toggle dans les settings artiste : "J'accepte les commandes personnalisees" (default: false)
+- [x] Toggle dans les settings artiste : "J'accepte les commandes personnalisees" (default: false)
 
 ### 19.4 — Paiement Commande
 
-- [ ] Quand l'artiste marque la commande comme terminee :
+- [x] Quand l'artiste marque la commande comme terminee :
   - Lien de paiement Stripe genere automatiquement (meme flow que les liens de paiement existants)
   - Envoi dans la conversation
   - Commission plateforme : 10% (identique aux ventes normales)
-- [ ] Apres paiement : l'oeuvre est ajoutee a la collection de l'acheteur + certificat genere
+- [x] Apres paiement : l'oeuvre est ajoutee a la collection de l'acheteur + certificat genere
 
 ---
 
@@ -643,9 +643,9 @@
 
 ### 20.1 — Integration Service d'Impression
 
-- [ ] Choisir le provider : **Gelato** (API, couverture EU, qualite) ou **Printful**
-- [ ] Creer le compte provider + API keys
-- [ ] Table `print_products` :
+- [x] Choisir le provider : **Gelato** (API, couverture EU, qualite) ou **Printful**
+- [x] Creer le compte provider + API keys
+- [x] Table `print_products` :
   ```sql
   CREATE TABLE print_products (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -660,38 +660,38 @@
     created_at TIMESTAMPTZ DEFAULT NOW()
   );
   ```
-- [ ] RLS : lecture publique si active, CRUD par l'artiste proprietaire de l'oeuvre
+- [x] RLS : lecture publique si active, CRUD par l'artiste proprietaire de l'oeuvre
 
 ### 20.2 — Configuration par l'Artiste
 
-- [ ] Dans le formulaire d'edition d'oeuvre (`/dashboard/artworks/[id]/edit`) :
+- [x] Dans le formulaire d'edition d'oeuvre (`/dashboard/artworks/[id]/edit`) :
   - Section "Reproductions" (sous le prix de l'original)
   - Toggle "Proposer des reproductions"
   - Upload de l'image HD pour l'impression (resolution min 300 DPI, Cloudflare R2)
   - Selection des formats disponibles (fine art, canvas, poster, etc.)
   - Prix de vente par format (suggestion automatique = cout provider x 2.5)
-- [ ] Verification qualite image : resolution minimum selon le format choisi
-- [ ] Preview du rendu : mockup genere via l'API du provider
+- [x] Verification qualite image : resolution minimum selon le format choisi
+- [x] Preview du rendu : mockup genere via l'API du provider
 
 ### 20.3 — Experience Achat Print
 
-- [ ] Sur la page oeuvre : section "Reproductions disponibles" sous le bouton d'achat de l'original
+- [x] Sur la page oeuvre : section "Reproductions disponibles" sous le bouton d'achat de l'original
   - Grille des formats avec prix
   - Mockup par format (image generee)
   - Bouton "Commander ce format"
-- [ ] Checkout print :
+- [x] Checkout print :
   - Adresse de livraison obligatoire
   - Calcul des frais de port via l'API provider
   - Delai de livraison estime
   - Recapitulatif : prix print + frais de port + total
-- [ ] Le paiement split :
+- [x] Le paiement split :
   - Cout de production + livraison → paye au provider
   - Marge artiste → compte Connect de l'artiste
   - Commission plateforme : 20% de la marge artiste
 
 ### 20.4 — Suivi de Commande
 
-- [ ] Table `print_orders` :
+- [x] Table `print_orders` :
   ```sql
   CREATE TABLE print_orders (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -719,9 +719,9 @@
     updated_at TIMESTAMPTZ DEFAULT NOW()
   );
   ```
-- [ ] Page `/dashboard/orders` (acheteur) — suivi des commandes print
-- [ ] Notifications : "Votre reproduction est en cours d'impression", "Votre colis a ete expedie"
-- [ ] Webhook provider → mise a jour du statut automatique
+- [x] Page `/dashboard/orders` (acheteur) — suivi des commandes print
+- [x] Notifications : "Votre reproduction est en cours d'impression", "Votre colis a ete expedie"
+- [x] Webhook provider → mise a jour du statut automatique
 
 ---
 
@@ -731,71 +731,71 @@
 
 ### 21.1 — Programme de Referral Artiste
 
-- [ ] Ajouter dans `artist_profiles` :
+- [x] Ajouter dans `artist_profiles` :
   ```sql
   ALTER TABLE artist_profiles ADD COLUMN referral_code TEXT UNIQUE;
   ALTER TABLE artist_profiles ADD COLUMN referred_by UUID REFERENCES profiles(id);
   ALTER TABLE artist_profiles ADD COLUMN referral_count INTEGER DEFAULT 0;
   ```
-- [ ] Generation automatique du code referral a la creation du profil artiste (format : `BOZZ-XXXX`)
-- [ ] Page `/join/[referralCode]` — landing page personnalisee :
+- [x] Generation automatique du code referral a la creation du profil artiste (format : `BOZZ-XXXX`)
+- [x] Page `/join/[referralCode]` — landing page personnalisee :
   - "Rejoint Bozzart sur l'invitation de [Artiste]"
   - Avatar + nom de l'artiste referent
   - Bouton "Creer mon profil artiste"
-- [ ] Avantages referral :
+- [x] Avantages referral :
   - Le referent passe a **8% de commission** pendant 6 mois (au lieu de 10%)
   - Le nouveau passe a **8% de commission** pendant 3 mois
   - Le referent recoit un badge "Ambassadeur" apres 5 referrals
-- [ ] Dashboard referral dans les settings artiste : code, lien, nombre de referrals, statut des avantages
+- [x] Dashboard referral dans les settings artiste : code, lien, nombre de referrals, statut des avantages
 
 ### 21.2 — Widget Embeddable
 
-- [ ] API route `GET /api/embed/[artistSlug]` — retourne un script JS + iframe
-- [ ] Le widget affiche :
+- [x] API route `GET /api/embed/[artistSlug]` — retourne un script JS + iframe
+- [x] Le widget affiche :
   - 3 dernieres oeuvres de l'artiste en grille
   - Lien "Voir sur Bozzart"
   - Style minimaliste, customisable (theme clair/sombre)
-- [ ] Page `/dashboard/settings/embed` — generateur de code embed :
+- [x] Page `/dashboard/settings/embed` — generateur de code embed :
   - Copier le code HTML/JS
   - Preview du widget
   - Choix du theme et du nombre d'oeuvres
-- [ ] L'artiste colle le widget sur son site perso → flux de visiteurs entrant permanent
+- [x] L'artiste colle le widget sur son site perso → flux de visiteurs entrant permanent
 
 ### 21.3 — SEO Social (Open Graph Avance)
 
-- [ ] OG images dynamiques sur TOUTES les pages publiques :
+- [x] OG images dynamiques sur TOUTES les pages publiques :
   - `/[artistSlug]` → image avec avatar, nom, compteur followers, derniere oeuvre
   - `/[artistSlug]/artwork/[artworkSlug]` → image de l'oeuvre + titre + artiste (deja partiellement fait)
   - `/drops` → image du drop actif avec countdown
   - `/collector/[username]` → image avec 4 oeuvres en grille + nom du collectionneur
-- [ ] Twitter Card meta tags (`twitter:card`, `twitter:image`, `twitter:title`)
-- [ ] Schema.org JSON-LD enrichi :
+- [x] Twitter Card meta tags (`twitter:card`, `twitter:image`, `twitter:title`)
+- [x] Schema.org JSON-LD enrichi :
   - `ArtGallery` sur les profils artistes
   - `VisualArtwork` sur les pages oeuvres (complement du `Product` existant)
   - `CollectionPage` sur les collections publiques
 
 ### 21.4 — Partage Natif Ameliore
 
-- [ ] Bouton partage sur chaque oeuvre et chaque post :
+- [x] Bouton partage sur chaque oeuvre et chaque post :
   - Mobile web : `navigator.share()` API (partage natif OS)
   - App Expo : `expo-sharing` (partage natif iOS/Android)
   - Desktop : dropdown avec copier lien, Twitter/X, Facebook, email
-- [ ] Lien partage court : `/a/[shortId]` pour les oeuvres, `/p/[shortId]` pour les posts
+- [x] Lien partage court : `/a/[shortId]` pour les oeuvres, `/p/[shortId]` pour les posts
   - Table `short_links` avec redirect 301 vers l'URL complete
   - Analytics : compteur de clics par lien
-- [ ] Quand un lien Bozzart est colle dans un chat/reseau social : belle preview OG automatique
+- [x] Quand un lien Bozzart est colle dans un chat/reseau social : belle preview OG automatique
 
 ### 21.5 — Landing Pages Thematiques
 
-- [ ] Pages SEO generees dynamiquement :
+- [x] Pages SEO generees dynamiquement :
   - `/art/peinture` — toutes les oeuvres du medium "peinture"
   - `/art/sculpture` — medium "sculpture"
   - `/art/photographie`, `/art/ceramique`, etc.
   - `/art/moins-de-500-euros` — oeuvres abordables
   - `/art/[ville]` — artistes par ville (utilise l'index GiST)
-- [ ] Chaque page a un H1 SEO, une meta description unique, et une grille d'oeuvres filtrees
-- [ ] Sitemap dynamique mis a jour pour inclure ces pages
-- [ ] Objectif : capter le trafic de recherche "acheter art en ligne", "artiste peintre [ville]"
+- [x] Chaque page a un H1 SEO, une meta description unique, et une grille d'oeuvres filtrees
+- [x] Sitemap dynamique mis a jour pour inclure ces pages
+- [x] Objectif : capter le trafic de recherche "acheter art en ligne", "artiste peintre [ville]"
 
 ---
 
