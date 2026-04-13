@@ -8,25 +8,65 @@
     "scheme": "bozzart",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "primaryColor": "#000000",
+    "description": "Bozzart — la plateforme sociale des artistes et collectionneurs. Decouvrez des oeuvres originales, suivez vos artistes preferes et achetez en direct.",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "art.bozzart.app"
+      "bundleIdentifier": "art.bozzart.app",
+      "associatedDomains": ["applinks:bozzart.com"],
+      "config": {
+        "usesNonExemptEncryption": false
+      },
+      "infoPlist": {
+        "LSApplicationCategoryType": "public.app-category.art-photography"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#000000"
       },
-      "package": "art.bozzart.app"
+      "package": "art.bozzart.app",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "bozzart.com",
+              "pathPrefix": "/"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        },
+        {
+          "action": "VIEW",
+          "data": [{ "scheme": "bozzart" }],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
+    },
+    "androidStatusBar": {
+      "backgroundColor": "#000000",
+      "barStyle": "light-content"
     },
     "plugins": ["expo-router", "expo-secure-store"],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "storeMetadata": {
+        "category": "Art",
+        "shortDescription": "Decouvrez, suivez et achetez l'art des artistes emergents.",
+        "keywords": ["art", "artistes", "galerie", "oeuvres", "peinture", "collectionneur", "social"]
+      },
+      "_todo": "Replace ./assets/icon.png, ./assets/splash.png, ./assets/adaptive-icon.png with V2 branded PNGs before store submission."
     }
   }
 }
