@@ -1,0 +1,33 @@
+{
+  "name": "Bozzart — Marketplace d'art contemporain",
+  "short_name": "Bozzart",
+  "description": "Decouvrez et achetez des oeuvres d'art directement aupres des artistes.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#000000",
+  "theme_color": "#a855f7",
+  "lang": "fr-FR",
+  "categories": ["art", "shopping", "social"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
