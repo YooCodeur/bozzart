@@ -13,6 +13,7 @@ const artistNav = [
   { href: "/dashboard/sales", label: "Ventes" },
   { href: "/dashboard/analytics", label: "Analytics" },
   { href: "/dashboard/drops", label: "Drops" },
+  { href: "/dashboard/referrals", label: "Parrainage" },
   { href: "/dashboard/settings", label: "Paramètres" },
 ];
 

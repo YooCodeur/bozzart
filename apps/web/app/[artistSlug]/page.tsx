@@ -19,14 +19,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!artist) return {};
 
+  const description = artist.story_html
+    ? artist.story_html.replace(/<[^>]*>/g, "").slice(0, 160)
+    : `Découvrez les œuvres de ${artist.full_name} sur Bozzart`;
+  const ogImage = `/api/og?title=${encodeURIComponent(artist.full_name)}&subtitle=${encodeURIComponent(artist.location_city || "Bozzart")}`;
+
   return {
     title: artist.full_name,
-    description: artist.story_html
-      ? artist.story_html.replace(/<[^>]*>/g, "").slice(0, 160)
-      : `Découvrez les œuvres de ${artist.full_name} sur Bozzart`,
+    description,
     openGraph: {
       title: artist.full_name,
+      description,
       type: "profile",
+      images: [{ url: ogImage, width: 1200, height: 630, alt: artist.full_name }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: artist.full_name,
+      description,
+      images: [ogImage],
     },
   };
 }
