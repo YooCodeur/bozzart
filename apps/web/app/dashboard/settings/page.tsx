@@ -14,6 +14,14 @@ export default function SettingsPage() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
+  // Phase 15.2 — Collection publique d'acheteur
+  const [isCollectionPublic, setIsCollectionPublic] = useState<boolean>(
+    (profile as unknown as { isCollectionPublic?: boolean })?.isCollectionPublic ?? false,
+  );
+  const [collectorBio, setCollectorBio] = useState<string>(
+    (profile as unknown as { collectorBio?: string })?.collectorBio ?? "",
+  );
+
   // Champs artiste
   const [fullName, setFullName] = useState(artistProfile?.fullName || "");
   const [locationCity, setLocationCity] = useState(artistProfile?.locationCity || "");
@@ -31,7 +39,12 @@ export default function SettingsPage() {
     // Sauvegarder le profil de base
     const { error: profileError } = await supabase
       .from("profiles")
-      .update({ display_name: displayName, bio })
+      .update({
+        display_name: displayName,
+        bio,
+        is_collection_public: isCollectionPublic,
+        collector_bio: collectorBio || null,
+      })
       .eq("id", profile?.id);
 
     if (profileError) {
@@ -94,6 +107,36 @@ export default function SettingsPage() {
             rows={3}
             className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
           />
+        </div>
+
+        {/* Phase 15.2 — Collection publique */}
+        <div className="rounded-md border bg-gray-50 p-4 space-y-3">
+          <h3 className="font-medium">Ma collection</h3>
+          <label className="flex items-start gap-2">
+            <input
+              type="checkbox"
+              checked={isCollectionPublic}
+              onChange={(e) => setIsCollectionPublic(e.target.checked)}
+              className="mt-1 rounded"
+            />
+            <span className="text-sm">
+              Rendre ma collection publique
+              <span className="block text-xs text-gray-500">
+                Votre page /collector/{profile?.username || "..."} sera accessible a tous.
+              </span>
+            </span>
+          </label>
+          <div>
+            <label htmlFor="settings-collectorBio" className="block text-sm text-gray-700">Bio de collectionneur (optionnelle)</label>
+            <textarea
+              id="settings-collectorBio"
+              value={collectorBio}
+              onChange={(e) => setCollectorBio(e.target.value)}
+              rows={2}
+              placeholder="Ce qui m inspire, mes coups de cœur..."
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+            />
+          </div>
         </div>
 
         {isArtist && (

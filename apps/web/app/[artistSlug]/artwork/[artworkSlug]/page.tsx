@@ -140,6 +140,13 @@ export default async function ArtworkPage({ params }: Props) {
               <p className="mt-6 text-2xl font-bold">{formatPrice(artwork.price, artwork.price_currency)}</p>
             )}
 
+            {collectorCount > 0 && (
+              <p className="mt-4 inline-flex items-center gap-2 rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-800">
+                <span aria-hidden="true">★</span>
+                {collectorCount} collectionneur{collectorCount !== 1 ? "s" : ""} possède{collectorCount !== 1 ? "nt" : ""} une œuvre de cet artiste
+              </p>
+            )}
+
             <div className="mt-8 flex items-center gap-3">
               {artwork.status === "published" && (
                 <Link href={`/checkout/${artwork.id}`} className="rounded-md bg-black px-8 py-3 text-white hover:bg-gray-800">
