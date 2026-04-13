@@ -189,6 +189,35 @@ serve(async (req) => {
       break;
     }
 
+    // ─────────────────────────────────────────────
+    // PHASE 20 — PRINT-ON-DEMAND
+    // Appended block: handles Stripe Checkout sessions whose metadata
+    // contains `print_order_id`. Sets status='paid' then invokes
+    // the print-order-create Edge Function to submit the order to
+    // the printing provider.
+    // ─────────────────────────────────────────────
+    case "checkout.session.completed": {
+      const session = event.data.object as Stripe.Checkout.Session;
+      const printOrderId = session.metadata?.print_order_id;
+      if (!printOrderId) break;
+
+      await supabase
+        .from("print_orders")
+        .update({
+          status: "paid",
+          stripe_payment_intent_id: typeof session.payment_intent === "string"
+            ? session.payment_intent
+            : session.payment_intent?.id ?? null,
+        })
+        .eq("id", printOrderId);
+
+      await supabase.functions.invoke("print-order-create", {
+        body: { print_order_id: printOrderId },
+      });
+
+      break;
+    }
+
     // ─── Mise a jour compte Connect ───
     case "account.updated": {
       const account = event.data.object as Stripe.Account;

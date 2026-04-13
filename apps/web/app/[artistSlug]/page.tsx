@@ -55,6 +55,23 @@ export default async function ArtistProfilePage({ params }: Props) {
     .order("created_at", { ascending: false })
     .limit(10);
 
+  // Phase 17 : stories visuelles publiees pour cet artiste
+  const { data: storyRows } = await supabase
+    .from("artwork_stories")
+    .select("artwork_id, slides, created_at, artworks!inner(title, primary_image_url, artist_id, status)")
+    .eq("is_published", true)
+    .eq("artworks.artist_id", artist.id)
+    .eq("artworks.status", "published")
+    .order("created_at", { ascending: false });
+
+  const stories = (storyRows ?? []).map((r: any) => ({
+    artwork_id: r.artwork_id as string,
+    artwork_title: r.artworks?.title as string,
+    primary_image_url: (r.artworks?.primary_image_url as string) ?? null,
+    slides: (r.slides as any[]) ?? [],
+    created_at: r.created_at as string,
+  }));
+
   // JSON-LD
   const jsonLd = {
     "@context": "https://schema.org",
@@ -77,6 +94,7 @@ export default async function ArtistProfilePage({ params }: Props) {
         artist={artist}
         artworks={artworks || []}
         posts={posts || []}
+        stories={stories}
       />
     </>
   );
