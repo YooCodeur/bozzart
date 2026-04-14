@@ -1,0 +1,23 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appIDs": ["TEAMID.art.bozzart.app"],
+        "components": [
+          { "/": "/feed", "comment": "Feed principal" },
+          { "/": "/feed/*", "comment": "Post detail" },
+          { "/": "/discover", "comment": "Decouvrir" },
+          { "/": "/discover/*", "comment": "Decouverte sous-pages" },
+          { "/": "/live/*", "comment": "Sessions live" },
+          { "/": "/messages", "comment": "Messages" },
+          { "/": "/messages/*", "comment": "Conversation" },
+          { "/": "/*", "comment": "Profil artiste via /[artistSlug]" }
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": ["TEAMID.art.bozzart.app"]
+  }
+}
