@@ -12,6 +12,7 @@
   "dependencies": {
     "@bozzart/api": "workspace:*",
     "@bozzart/core": "workspace:*",
+    "@bozzart/shared": "workspace:*",
     "@bozzart/ui": "workspace:*",
     "@playwright/test": "^1.58.2",
     "@stripe/react-stripe-js": "^2.9.0",
