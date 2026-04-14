@@ -31,6 +31,8 @@ export interface FeedPost {
   } | null;
 }
 
+export type FeedSource = "follow" | "discovery";
+
 const CAPTION_MAX = 180;
 
 const reactionLabels: Array<{ key: string; emoji: string; label: string }> = [
@@ -59,10 +61,16 @@ function formatRelativeFr(iso: string): string {
   return `il y a ${y} an${y > 1 ? "s" : ""}`;
 }
 
-export function FeedPostCard({ post }: { post: FeedPost }) {
+export function FeedPostCard({ post, source }: { post: FeedPost; source?: FeedSource }) {
   const [expanded, setExpanded] = useState(false);
 
   const displayName = post.artist.profiles?.display_name || post.artist.full_name;
+  const sourceLabel =
+    source === "follow"
+      ? `Parce que vous suivez ${displayName}`
+      : source === "discovery"
+        ? "Populaire en ce moment"
+        : null;
   const avatarUrl = post.artist.profiles?.avatar_url;
   const caption = post.caption || "";
   const isLong = caption.length > CAPTION_MAX;
@@ -76,6 +84,14 @@ export function FeedPostCard({ post }: { post: FeedPost }) {
 
   return (
     <article className="rounded-lg border bg-white">
+      {sourceLabel && (
+        <p
+          className={`px-4 pt-3 text-xs ${source === "follow" ? "text-blue-600" : "text-amber-600"}`}
+          aria-label={sourceLabel}
+        >
+          {sourceLabel}
+        </p>
+      )}
       {/* Header */}
       <header className="flex items-center gap-3 px-4 py-3">
         <Link
