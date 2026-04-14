@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const supabase = createSupabaseServerClient();
   const { data: artwork } = await supabase
     .from("artworks")
-    .select("title, meta_description, price, price_currency, primary_image_url, artist:artist_profiles(full_name)")
+    .select("id, title, meta_description, price, price_currency, primary_image_url, artist:artist_profiles(full_name)")
     .eq("slug", params.artworkSlug)
     .eq("status", "published")
     .single();
@@ -28,13 +28,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!artwork) return {};
 
   const artist = artwork.artist as unknown as { full_name: string };
+  const ogImage = `/api/og/artwork/${artwork.id}`;
+  const description =
+    artwork.meta_description ||
+    `${artwork.title} par ${artist.full_name}. ${artwork.price} ${artwork.price_currency}`;
 
   return {
     title: `${artwork.title} — ${artist.full_name}`,
-    description: artwork.meta_description || `${artwork.title} par ${artist.full_name}. ${artwork.price} ${artwork.price_currency}`,
+    description,
     openGraph: {
-      title: artwork.title,
-      images: [artwork.primary_image_url],
+      title: `${artwork.title} — ${artist.full_name}`,
+      description,
+      type: "article",
+      images: [{ url: ogImage, width: 1200, height: 630, alt: artwork.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${artwork.title} — ${artist.full_name}`,
+      description,
+      images: [ogImage],
     },
   };
 }

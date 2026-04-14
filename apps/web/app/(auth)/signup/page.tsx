@@ -83,6 +83,13 @@ export default function SignupPage() {
       return;
     }
 
+    // Claim referral (if a ref_code cookie was set via /r/[code])
+    try {
+      await fetch("/api/referrals/claim", { method: "POST" });
+    } catch {
+      // best-effort; do not block signup success
+    }
+
     setSuccess(true);
     setLoading(false);
   }

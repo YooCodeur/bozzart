@@ -19,6 +19,19 @@ const nextConfig = {
   },
   headers: async () => [
     {
+      // Allow embed pages to be iframed from any origin (Phase 21 widget)
+      source: "/embed/:path*",
+      headers: [
+        { key: "Access-Control-Allow-Origin", value: "*" },
+        { key: "Access-Control-Allow-Methods", value: "GET, OPTIONS" },
+        { key: "X-Frame-Options", value: "ALLOWALL" },
+        {
+          key: "Content-Security-Policy",
+          value: "frame-ancestors *;",
+        },
+      ],
+    },
+    {
       source: "/(.*)",
       headers: [
         { key: "X-Frame-Options", value: "DENY" },
